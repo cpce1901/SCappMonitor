@@ -1,0 +1,91 @@
+{% extends 'include/base.html' %}
+
+{% load static %}
+
+{% block title %}Energy-Ubicaciones{% endblock title %}
+
+{% block style %}
+
+<link rel="stylesheet" href="{% static 'css/sensors.css' %}">
+
+{% endblock style %}
+
+{% block script %}
+
+{% endblock script %}
+
+{% block content %}
+
+<body>
+
+    {% include 'include/header.html' %}
+
+    <div class="container-fluid">
+        <div class="row">
+
+            {% include 'include/aside.html' %}
+
+            <main class="ms-sm-auto col-xl-10 px-md-4">
+
+                {% if sensors %}
+
+                <div class="m-4">
+                    <h1>Reportes</h1>
+                    <h5 class="text-danger">{{ place.place }}</h5>
+                </div>
+                <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-3">
+                    {% for sensor in sensors %}
+                    <div class="col">
+                        <a href="{% url 'reports_app:reportForm' place.id sensor.id %}" style="text-decoration: none">
+                            <div class="card shadow p-3 mb-2 bg-body-white rounded">
+                                <div class="container-image">
+                                    <img src="{{ sensor.device_sensor.imagen_device.url }}" class="card-img-top relation"/>
+                                </div>
+
+                                <div class="card-body">
+                                    <h5 class="card-title">Sensor {{ sensor.number_sensor }}</h5>
+                                    <p class="card-text">{{ sensor.device_sensor.tag_device.name }}
+                                        {{sensor.device_sensor.code }}</p>
+                                    <p class="card-text"><small class="text-muted">{{ sensor.detail }}</small>
+                                    </p>
+
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    {% endfor %}
+                </div>
+
+                {% else %}
+
+                <div class="container-fluid mt-5">
+                    <div class="row">
+                        <div class="col-12 mb-4">
+                            <h1>Advertencia</h1>
+                        </div>
+                        <div class="col-12">
+                            <h5>
+                                Ha ocurrido un error interno, es posible que no existan registros de
+                                ningun sensor.
+                            </h5>
+                            <h5>
+                                Si esta seguro de la existencia de sensores porfavor comuniquese con su
+                                administrador de sistema.
+                            </h5>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </main>
+        </div>
+    </div>
+
+</body>
+
+
+{% block scriptII %}
+
+{% endblock scriptII %}
+
+{% endblock content %}

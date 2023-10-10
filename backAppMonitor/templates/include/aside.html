@@ -1,0 +1,43 @@
+{% load static %}
+<nav id="sidebarMenu" class="col-xl-2 d-xl-block bg-white sidebar collapse">
+    <div class="position-sticky pt-3 sidebar-sticky ">
+      <ul class="nav flex-column nav-justified">       
+       
+        <li class="nav-item">
+          <a class="d-flex align-items-center justify-content-center nav-link {% if 'lugares' in request.path %} here {% endif %} gap-2" href="{% url 'sensors_app:places' %}" >
+            <div class="sb-nav-link-icon mx-2"><img src="{% static 'img/icons/activity.svg' %}" alt="Sensores" style="min-height: 30px;"></img></div> 
+            <p class="h5 ">Sensores</p> 
+          </a>
+        </li>   
+        <hr>     
+        <li class="nav-item">
+          <a class="d-flex align-items-center justify-content-center nav-link {% if 'reportes' in request.path %} here {% endif %} gap-2" href="{% url 'reports_app:reports' %}">
+            <div class="sb-nav-link-icon mx-2"><img src="{% static 'img/icons/list.svg' %}" alt="Informes" style="min-height: 30px;"></img></div>           
+            <p class="h5 ">Informes</p> 
+          </a>
+        </li>
+        <hr> 
+        <li class="nav-item">
+          <a class="d-flex align-items-center justify-content-center nav-link {% if 'alertas' in request.path %} here {% endif %} gap-2" href="{% url 'alerts_app:alerts' %}">
+            <div class="sb-nav-link-icon mx-2"><img src="{% static 'img/icons/triangle-exclamation-solid.svg' %}" alt="Alarmas" style="min-height: 30px;"></img></div>     
+            <p class="h5 ">Alarmas</p> 
+          </a>
+        </li>
+        <hr> 
+        <li class="nav-item">
+          <a class="d-flex align-items-center justify-content-center nav-link {% if 'usuarios' in request.path %} here {% endif %} gap-2" href="{% url 'users_app:user' %}">
+            <div class="sb-nav-link-icon mx-2"><img src="{% static 'img/icons/user.svg' %}" alt="Usuarios" style="min-height: 30px;"></img></div>     
+            <p class="h5 ">Usuarios</p> 
+          </a>
+        </li>
+        <hr> 
+        <li class="nav-item">
+          <a class="d-flex align-items-center justify-content-center nav-link mx-3 gap-2" href="{% url 'users_app:logout' %}">
+            <div class="sb-nav-link-icon"><img src="{% static 'img/icons/log-out.svg' %}" alt="Usuario out" style="min-height: 30px;"></img></div>     
+            <p class="h5 mx-4">Salir</p> 
+            
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>

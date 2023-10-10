@@ -1,0 +1,119 @@
+{% extends 'include/base.html' %}
+
+{% load static %}
+
+{% block title %}Energy-Emais{% endblock title %}
+
+{% block style %}
+
+<link rel="stylesheet" href="{% static 'css/alertsInit.css' %}">
+
+{% endblock style %}
+
+{% block script %}
+
+{% endblock script %}
+
+{% block content %}
+
+<body class="bg-light">
+
+    {% include 'include/header.html' %}
+
+    <div class="container">
+        <div class="row">
+            {% include 'include/aside.html' %}
+
+            <main class="ms-sm-auto col-xl-10 px-md-4 full">
+
+                <div class="m-4">
+                    <h1>Gestión de Correos</h1>
+                    <p class="text-success">Notificaciones</p>
+                </div>
+
+                {% if not emails %}
+
+                <div class="container-fluid mt-5">
+                    <div class="d-flex align-items-center justify-content-center">
+                        <li class="py-4">
+                            Porfavor ingresa un correo a la lista
+                        </li>
+                    </div>
+                </div>
+
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            <div class="d-flex gap-3 justify-content-center">
+
+                                {% if not emails.count >= 10 %}
+                                <a href="{% url 'alerts_app:emailAdd' %}" class="btn btn-success mt-3">Agregar</a>
+                                {% endif %}
+
+                                <a href="{% url 'alerts_app:alerts' %}" class="btn btn-primary mt-3">Volver</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {% else %}
+
+                <div class="d-flex flex-column align-items-center">
+                    {% for email in emails %}
+                    <div class="dropdown mb-2 use">
+                        <button class="btn btn-outline-primary w-100 dropdown-toggle" type="button"
+                            data-bs-toggle="dropdown">
+                            {{ email.name }}
+                        </button>
+                        <div class="dropdown-menu w-100">
+                            <li class="d-flex justify-content-around gap-3 py-3">
+                                {{ email.email }}
+                            </li>
+
+                            <li class="d-flex flex-column">
+                                <div class="d-flex align-items-center justify-content-center gap-3 p-3 dropdown-item">
+                                    <div class="d-flex justify-content-around gap-3">
+                                        <a href="{% url 'alerts_app:emailUpdate' email.id %}"
+                                            class="btn btn-success">Editar</a>
+                                        <a href="{% url 'alerts_app:emailDelete' email.id %}"
+                                            class="btn btn-danger">Eliminar</a>
+                                    </div>
+                                </div>
+                            </li>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            <div class="d-flex gap-3 justify-content-center">
+
+                                {% if not emails.count >= 10 %}
+                                <a href="{% url 'alerts_app:emailAdd' %}" class="btn btn-success mt-3">Agregar</a>
+                                {% endif %}
+
+                                <a href="{% url 'alerts_app:alerts' %}" class="btn btn-primary mt-3">Volver</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                {% endif %}
+
+
+            </main>
+        </div>
+    </div>
+</body>
+
+
+{% block scriptII %}
+
+
+
+{% endblock scriptII %}
+
+{% endblock content %}

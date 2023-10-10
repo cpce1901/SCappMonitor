@@ -1,0 +1,102 @@
+{% extends 'include/base.html' %}
+
+{% load static %}
+
+{% block title %}Energy-Ubicaciones{% endblock title %}
+
+{% block style %}
+
+<link rel="stylesheet" href="{% static 'css/alertsInit.css' %}">
+
+{% endblock style %}
+
+{% block script %}
+
+{% endblock script %}
+
+{% block content %}
+
+<body class="bg-light">
+
+    {% include 'include/header.html' %}
+
+    <div class="container">
+        <div class="row">
+            {% include 'include/aside.html' %}
+
+            <main class="ms-sm-auto col-xl-10 px-md-4 full">
+
+                <div class="m-4">
+                    <h1>Gestión de alarmas</h1>
+                    <p class="text-success">Lugares instalados.</p>
+                </div>
+
+                <div class="d-flex flex-column align-items-center">
+                    {% for place in places %}
+                    <div class="dropdown mb-2 use">
+                        <button class="btn btn-outline-primary w-100 dropdown-toggle" type="button"
+                            data-bs-toggle="dropdown">
+                            {{ place.place }}
+                        </button>
+                        <div class="dropdown-menu w-100">
+
+
+                            {% if place.located.all %}
+
+                            {% for sensor in place.located.all %}
+
+                            <a href="{% url 'alerts_app:gestionAlertsSensor' sensor.number_sensor %}"
+                                class="d-flex align-items-center justify-content-center gap-3 p-3 dropdown-item">
+                                <li>Sensor: {{ sensor.number_sensor }}</li>
+                                <span>-</span>
+                                <li>{{ sensor.detail }}</li>
+                            </a>
+
+                            {% if not forloop.last %}
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+
+                            {% endif %}
+
+                            {% endfor %}
+
+                            {% else %}
+
+                            <li class="text-center p-4 text-danger fw-bold">No existe sensores en este lugar</li>
+
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                {% if places %}
+
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            <div class="d-flex gap-3 justify-content-center">
+                                <a href="{% url 'alerts_app:alerts' %}"
+                                    class="btn btn-primary mt-3">Volver</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {% endif %}
+
+
+            </main>
+        </div>
+    </div>
+</body>
+
+
+{% block scriptII %}
+
+
+
+{% endblock scriptII %}
+
+{% endblock content %}

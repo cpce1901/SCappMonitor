@@ -1,0 +1,75 @@
+{% extends 'include/base.html' %}
+
+{% load static %}
+
+{% block title %}Energy-Ubicaciones{% endblock title %}
+
+{% block style %}
+
+<link href="{% static 'css/lectures.css' %}" rel="stylesheet">
+
+{% endblock style %}
+
+{% block script %}
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{% static 'js/chart-script-today.js' %}"></script>
+
+{% endblock script %}
+
+{% block content %}
+
+<body>
+
+    {% include 'include/header.html' %}
+
+    <div id="json_data" style="display: none" data-json="{{ json_data }}"></div>
+
+    <div class="container-fluid">
+        <div class="row">
+
+            {% include 'include/aside.html' %}
+
+            <main class="ms-sm-auto col-xl-10 px-md-4">
+                <div class="m-4">
+                    <h1>Gráfico diario</h1>
+                </div>
+
+                <div class="d-flex flex-column flex-md-row align-items-center gap-5">
+
+                    <!-- Place imagen for sensor -->
+                    <div class="flex-grow-5 flex-shrink-1 align-self-start justify-content-center">
+                        <div class="card h-auto shadow p-3 mb-2 bg-body-white rounded">
+                            <div class="desing d-md-none d-lg-block">
+                                <img src="{{ place.image.url }}" class="card-img-top" />
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">{{ place.place }}</h5>
+                                <p class="card-text">
+                                    Sensor: {{ sensor.detail }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Lectures for sensor -->
+
+                    <div class="container h-100 d-inline-block ">
+
+                        <!-- Grafico -->
+                        <div class="rounded shadow-lg p-3 my-3">
+                            <canvas id="chart_0" data-var="{{ today }}"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+</body>
+
+
+{% block scriptII %}
+
+{% endblock scriptII %}
+
+{% endblock content %}

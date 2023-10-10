@@ -1,0 +1,306 @@
+{% extends 'include/base.html' %}
+
+{% load static %}
+
+{% block title %}Energy-Ubicaciones{% endblock title %}
+
+{% block style %}
+
+<link href="{% static 'css/lectures.css' %}" rel="stylesheet">
+
+{% endblock style %}
+
+{% block script %}
+
+<script src="{% static 'js/mqttconect.js' %}"></script>
+<script src="{% static 'js/mqttlectures.js' %}"></script>
+
+{% endblock script %}
+
+{% block content %}
+
+<body>
+
+    {% include 'include/header.html' %}
+
+    <div id="json_data" style="display: none" data-json="{{ json_data }}"></div>
+
+    <div class="container-fluid">
+        <div class="row">
+
+            {% include 'include/aside.html' %}
+
+            <main class="ms-sm-auto col-xl-10 px-md-4">
+                <div class="m-4">
+                    <h1>Sensores</h1>
+                    <h5 class="text-danger">Lecturas On-line</h5>
+                </div>
+
+                <div class="d-flex flex-column flex-md-row align-items-center gap-5">
+
+                    <!-- Place imagen for sensor -->
+                    <div class="flex-grow-5 flex-shrink-1 align-self-start justify-content-center">
+                        <div class="card h-auto shadow p-3 mb-2 bg-body-white rounded">
+                            <div class="desing d-md-none d-lg-block">
+                                <img src="{{ place.image.url }}" class="card-img-top" />
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">{{ place.place }}</h5>
+                                <p class="card-text">
+                                    Sensor: {{ lectures.sensor.detail }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Lectures for sensor -->
+
+                    <div class="container">
+                        <div class="d-flex flex-column flex-nowrap gap-3">
+
+                            <!-- Tension for sensor -->
+
+                            <div class="d-flex flex-column flex-md-row justify-content-around gap-3">
+
+                                <!-- Volts mono for sensor -->
+
+                                <div class="d-flex justify-content-around flex-grow-1 flex-md-wrap gap-3">
+                                    <div class="flex-fill">
+                                        <a href="{% url 'graphics_app:daygraphics' place.id sensor.id 'v1' %}" class="text-decoration-none text-dark">
+                                            <div class="card h-auto rounded pt-1 shadow-lg change1">
+                                                <div class="card-body">
+                                                    <h6 class="card-title mb-1">
+                                                        Tensión L1/N
+                                                    </h6>
+                                                    <h5 id="v1" class="card-title fw-bold text-center pt-2">{{ lectures.v1 }} V </h5>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+
+                                    <div class="flex-fill">
+                                        <a href="{% url 'graphics_app:daygraphics' place.id sensor.id 'v2' %}" class="text-decoration-none text-dark">
+                                            <div class="card h-auto rounded pt-1 shadow-lg change1">
+                                                <div class="card-body">
+                                                    <h6 class="card-title mb-1">
+                                                        Tensión L2/N
+                                                    </h6>
+                                                    <h5 id="v2" class="card-title fw-bold text-center pt-2">{{ lectures.v2 }} V </h5>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex justify-content-around flex-grow-1 flex-wrap gap-3">
+                                    <div class="flex-fill">
+                                        <a href="{% url 'graphics_app:daygraphics' place.id sensor.id 'v3' %}" class="text-decoration-none text-dark">
+                                            <div class="card h-auto rounded pt-1 shadow-lg change1">
+                                                <div class="card-body">
+                                                    <h6 class="card-title mb-1">
+                                                        Tensión L3/N
+                                                    </h6>
+                                                    <h5 id="v3" class="card-title fw-bold text-center pt-2">{{ lectures.v3 }} V </h5>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+
+                                    <!-- Volts triphases for sensor -->
+
+                                    <div class="flex-fill">
+                                        <a href="{% url 'graphics_app:daygraphics' place.id sensor.id 'v12' %}" class="text-decoration-none text-dark">
+                                            <div class="card h-auto rounded pt-1 shadow-lg change1">
+                                                <div class="card-body">
+                                                    <h6 class="card-title mb-1">
+                                                        Tensión L1/L2
+                                                    </h6>
+                                                    <h5 id="v12" class="card-title fw-bold text-center pt-2">{{ lectures.v12 }} V </h5>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex justify-content-around flex-grow-1 flex-wrap gap-3">
+                                    <div class="flex-fill">
+                                        <a href="{% url 'graphics_app:daygraphics' place.id sensor.id 'v13' %}" class="text-decoration-none text-dark">
+                                            <div class="card h-auto rounded pt-1 shadow-lg change1">
+                                                <div class="card-body">
+                                                    <h6 class="card-title mb-1">
+                                                        Tensión L1/L3
+                                                    </h6>
+                                                    <h5 id="v13" class="card-title fw-bold text-center pt-2">{{ lectures.v13 }} V </h5>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+
+                                    <div class="flex-fill">
+                                        <a href="{% url 'graphics_app:daygraphics' place.id sensor.id 'v23' %}" class="text-decoration-none text-dark">
+                                            <div class="card h-auto rounded pt-1 shadow-lg change1">
+                                                <div class="card-body">
+                                                    <h6 class="card-title mb-1">
+                                                        Tensión L2/L3
+                                                    </h6>
+                                                    <h5 id="v23" class="card-title fw-bold text-center pt-2">{{ lectures.v23 }} V </h5>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Power and current for sensor -->
+
+                            <div class="d-flex flex-column flex-md-row justify-content-around justify-content-lg-center gap-3">
+
+                                <!-- Current by phases for sensor -->
+
+                                <div class="d-flex justify-content-around flex-grow-1 flex-md-wrap gap-3">
+                                    <div class="flex-fill">
+                                        <a href="{% url 'graphics_app:daygraphics' place.id sensor.id 'i1' %}" class="text-decoration-none text-dark">
+                                            <div class="card h-auto rounded pt-1 shadow-lg change2">
+                                                <div class="card-body">
+                                                    <h6 class="card-title mb-1">
+                                                        Corriente L1
+                                                    </h6>
+                                                    <h5 id="i1" class="card-title fw-bold text-center pt-2">{{ lectures.i1 }} A </h5>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+
+                                    <div class="flex-fill">
+                                        <a href="{% url 'graphics_app:daygraphics' place.id sensor.id 'i2' %}" class="text-decoration-none text-dark">
+                                            <div class="card h-auto rounded pt-1 shadow-lg change2">
+                                                <div class="card-body">
+                                                    <h6 class="card-title mb-1">
+                                                        Corriente L2
+                                                    </h6>
+                                                    <h5 id="i2" class="card-title fw-bold text-center pt-2">{{ lectures.i2 }} A </h5>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex justify-content-around flex-grow-1 flex-md-wrap gap-3">
+                                    <div class="flex-fill">
+                                        <a href="{% url 'graphics_app:daygraphics' place.id sensor.id 'i3' %}" class="text-decoration-none text-dark">
+                                            <div class="card h-auto rounded pt-1 shadow-lg change2">
+                                                <div class="card-body">
+                                                    <h6 class="card-title mb-1">
+                                                        Corriente L3
+                                                    </h6>
+                                                    <h5 id="i3" class="card-title fw-bold text-center pt-2">{{ lectures.i3 }} A </h5>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+
+                                    <!-- Power by phases for sensor -->
+
+                                    <div class="flex-fill">
+                                        <a href="{% url 'graphics_app:daygraphics' place.id sensor.id 'p1' %}" class="text-decoration-none text-dark">
+                                            <div class="card h-auto rounded pt-1 shadow-lg change2">
+                                                <div class="card-body">
+                                                    <h6 class="card-title mb-1">
+                                                        Potencia L1
+                                                    </h6>
+                                                    <h5 id="p1" class="card-title fw-bold text-center pt-2">{{ lectures.p1 }} Kw </h5>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex justify-content-around flex-grow-1 flex-md-wrap gap-3">
+                                    <div class="flex-fill">
+                                        <a href="{% url 'graphics_app:daygraphics' place.id sensor.id 'p2' %}" class="text-decoration-none text-dark">
+                                            <div class="card h-auto rounded pt-1 shadow-lg change2">
+                                                <div class="card-body">
+                                                    <h6 class="card-title mb-1">
+                                                        Potencia L2
+                                                    </h6>
+                                                    <h5 id="p2" class="card-title fw-bold text-center pt-2">{{ lectures.p2 }} Kw </h5>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+
+                                    <div class="flex-fill">
+                                        <a href="{% url 'graphics_app:daygraphics' place.id sensor.id 'p3' %}" class="text-decoration-none text-dark">
+                                            <div class="card h-auto rounded pt-1 shadow-lg change2">
+                                                <div class="card-body">
+                                                    <h6 class="card-title mb-1">
+                                                        Potencia L3
+                                                    </h6>
+                                                    <h5 id="p3" class="card-title fw-bold text-center pt-2">{{ lectures.p3 }} Kw </h5>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Others lectures for sensor -->
+
+                            <div class="d-flex flex-column flex-md-row justify-content-around justify-content-lg-center gap-3">
+
+                                <!-- Others lectures for sensor -->
+
+                                <div class="flex-fill">
+                                    <a href="{% url 'graphics_app:daygraphics' place.id sensor.id 'pa' %}" class="text-decoration-none text-dark">
+                                        <div class="card h-auto rounded pt-1 shadow-lg change3">
+                                            <div class="card-body">
+                                                <h6 class="card-title mb-1">
+                                                    Potencia Activa
+                                                </h6>
+                                                <h5 id="pa" class="card-title fw-bold text-center pt-2">{{ lectures.pa }} Kw </h5>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <div class="flex-fill">
+                                    <a href="{% url 'graphics_app:daygraphics' place.id sensor.id 'fp' %}" class="text-decoration-none text-dark">
+                                        <div class="card h-auto rounded pt-1 shadow-lg change3">
+                                            <div class="card-body">
+                                                <h6 class="card-title mb-1">
+                                                    Factor de potencia
+                                                </h6>
+                                                <h5 id="fp" class="card-title fw-bold text-center pt-2">{{ lectures.fp }} </h5>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <div class="flex-fill">
+
+                                    <a href="{% url 'graphics_app:daygraphics' place.id sensor.id 'hz' %}" class="text-decoration-none text-dark">
+                                        <div class="card h-auto rounded pt-1 shadow-lg change3">
+                                            <div class="card-body">
+                                                <h6 class="card-title mb-1">
+                                                    Frecuencia
+                                                </h6>
+                                                <h5 id="hz" class="card-title fw-bold text-center pt-2">{{ lectures.hz }} Kw </h5>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+</body>
+
+
+{% block scriptII %}
+
+{% endblock scriptII %}
+
+{% endblock content %}

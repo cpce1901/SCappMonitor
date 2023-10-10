@@ -1,0 +1,89 @@
+{% extends 'include/base.html' %}
+
+{% load static %}
+
+{% block title %}Energy-Ubicaciones{% endblock title %}
+
+{% block style %}
+
+{% endblock style %}
+
+{% block script %}
+
+{% endblock script %}
+
+{% block content %}
+
+<body>
+
+    {% include 'include/header.html' %}
+
+    <div class="container-fluid">
+        <div class="row">
+
+            {% include 'include/aside.html' %}
+
+            <main class="ms-sm-auto col-xl-10 px-md-4">
+
+                <div class="container my-4">
+
+                    <h2 class="py-4">Bienvenido {{ user.first_name}}</h2>
+
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-sm-12 col-lg-2 py-1">
+                                <div class="row">
+                                    <div class="col col-lg-10">Username</div>
+                                    <hr class="border border-danger border-2 opacity-70 na">
+                                    <div class="col">{{ user.username }}</div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-lg-3 py-1">
+                                <div class="row">
+                                    <div class="col col-lg-10">Email</div>
+                                    <hr class="border border-danger border-2 opacity-70 na">
+                                    <div class="col">{{ user.email }}</div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-lg-2 py-1">
+                                <div class="row">
+                                    <div class="col col-lg-10">Nombre</div>
+                                    <hr class="border border-danger border-2 opacity-70 na">
+                                    <div class="col">{{ user.first_name }}</div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-lg-2 py-1">
+                                <div class="row">
+                                    <div class="col col-lg-10">Apellido</div>
+                                    <hr class="border border-danger border-2 opacity-70 na">
+                                    <div class="col">{{ user.last_name }}</div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-lg-1 py-1">
+                                <div class="row">
+                                    <div class="col col-lg-10">Estaff</div>
+                                    <hr class="border border-danger border-2 opacity-70 na">
+                                    <div class="col"><input type="checkbox" checked="{{ user.is_staff }}"></div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-lg-2 py-1">
+                                <div class="row">
+                                    <a href="{% url 'users_app:change-pass' %}"
+                                        class="btn btn-outline-danger sm-auto but">Cambio
+                                        Pass</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+</body>
+
+
+{% block scriptII %}
+
+{% endblock scriptII %}
+
+{% endblock content %}

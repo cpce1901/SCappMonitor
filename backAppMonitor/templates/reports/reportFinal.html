@@ -1,0 +1,207 @@
+{% extends 'include/base.html' %}
+
+{% load humanize %}
+
+{% load extrasTags %}
+
+{% load static %}
+
+{% block title %}Energy-Reportes{% endblock title %}
+
+{% block style %}
+
+{% endblock style %}
+
+{% block script %}
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{% static 'js/chart-script.js' %}"></script>
+
+{% endblock script %}
+
+{% block content %}
+
+<body>
+
+    {% include 'include/header.html' %}
+
+    <div class="container-fluid">
+        <div class="row">
+
+            {% include 'include/aside.html' %}
+
+            <main class="ms-sm-auto col-xl-10 px-md-4">
+                <div class="container mt-3">
+                    <div class="d-flex flex-column justify-content-center">
+
+                        <div>
+                            <h1>Reporte</h1>
+                            <p class="text-danger m-0">{{ today }}</p>
+                            <p class="mb-3">Usuario: {{ user.first_name }} {{ user.last_name }}</p>
+                        </div>
+
+                        <!-- Encabezado -->
+                        <div class="d-flex rounded bg-primary p-3 text-white">
+                            <div class="d-flex flex-fill flex-column align-items-start text-start">
+                                <p class="m-0">Sensor: N°{{ sensor.number_sensor }}</p>
+                                <p class="m-0">{{ sensor.located_sensor.place }}</p>
+                                <p class="m-0">Sensor: {{ sensor.detail }}</p>
+
+                            </div>
+                            <div class="d-flex flex-fill flex-column justify-content-end align-items-end text-end">
+                                <p class="m-0">Desde: {{ date1|date:"d M Y" }}</p>
+                                <p class="m-0">Hasta: {{ date2|date:"d M Y" }}</p>
+                            </div>
+                        </div>
+
+                        
+                        <!-- Grafico -->
+                        <div class="rounded shadow-lg p-3 my-3">
+                            <canvas id="chart_0" data-var1="{{ json_datos_1 }}" data-var2="{{ json_datos_2 }}"
+                                data-var3="{{ json_datos_3 }}">
+                            </canvas>
+                        </div>
+                        <!-- Analitica -->
+
+                        <!-- Maximos -->
+                        <div class="d-flex flex-column flex-md-row gap-3 mb-5">
+                            <!-- Maximo 1 -->
+                            <div class="rounded shadow-lg p-3 mb-3 d-flex">
+                                <div class="d-flex flex-column align-items-center justify-content-center px-5">
+                                    <h5>Valor</h5>
+                                    <h5>maximo</h5>
+                                </div>
+                                <div class="d-flex flex-fill flex-column align-items-center">
+                                    <h3 class="my-4">{{ json_analitics_1.max.0|floatformat:"2"|comaBydot }} {{json_analitics_1.var_name }}</h3>
+                                    <p class="text-danger">{{ json_analitics_1.max.1|date:"d M Y" }} {{json_analitics_1.max.1|date:"H:i" }}</p>
+                                </div>
+                            </div>
+
+                            <!-- Maximo 2 -->
+                            <div class="rounded shadow-lg p-3 mb-3 d-flex">
+                                <div class="d-flex flex-column align-items-center justify-content-center px-5">
+                                    <h5>Valor</h5>
+                                    <h5>maximo</h5>
+                                </div>
+                                <div class="d-flex flex-fill flex-column align-items-center">
+                                    <h3 class="my-4">{{ json_analitics_2.max.0|floatformat:"2"|comaBydot }} {{json_analitics_2.var_name }}</h3>
+                                    <p class="text-danger">{{ json_analitics_2.max.1|date:"d M Y" }} {{json_analitics_2.max.1|date:"H:i" }}</p>
+                                </div>
+                            </div>
+
+                            <!-- Maximo 3 -->
+                            <div class="rounded shadow-lg p-3 mb-3 d-flex">
+                                <div class="d-flex flex-column align-items-center justify-content-center px-5">
+                                    <h5>Valor</h5>
+                                    <h5>maximo</h5>
+                                </div>
+                                <div class="d-flex flex-fill flex-column align-items-center">
+                                    <h3 class="my-4">{{ json_analitics_3.max.0|floatformat:"2"|comaBydot }} {{json_analitics_3.var_name }}</h3>
+                                    <p class="text-danger">{{ json_analitics_3.max.1|date:"d M Y" }} {{json_analitics_3.max.1|date:"H:i" }}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Minimos -->
+                        <div class="d-flex flex-column flex-md-row gap-3 mb-5">
+                            <!-- Minimo 1 -->
+                            <div class="rounded shadow-lg p-3 mb-3 d-flex">
+                                <div class="d-flex flex-column align-items-center justify-content-center px-5">
+                                    <h5>Valor</h5>
+                                    <h5>minimo</h5>
+                                </div>
+                                <div class="d-flex flex-fill flex-column align-items-center">
+                                    <h3 class="my-4">{{ json_analitics_1.min.0|floatformat:"2"|comaBydot }} {{json_analitics_1.var_name }}</h3>
+                                    <p class="text-danger">{{ json_analitics_1.min.1|date:"d M Y" }} {{json_analitics_1.min.1|date:"H:i" }}</p>
+                                </div>
+                            </div>
+
+                            <!-- Minimo 2 -->
+                            <div class="rounded shadow-lg p-3 mb-3 d-flex">
+                                <div class="d-flex flex-column align-items-center justify-content-center px-5">
+                                    <h5>Valor</h5>
+                                    <h5>minimo</h5>
+                                </div>
+                                <div class="d-flex flex-fill flex-column align-items-center">
+                                    <h3 class="my-4">{{ json_analitics_2.min.0|floatformat:"2"|comaBydot }} {{json_analitics_2.var_name }}</h3>
+                                    <p class="text-danger">{{ json_analitics_2.min.1|date:"d M Y" }} {{json_analitics_2.min.1|date:"H:i" }}</p>
+                                </div>
+                            </div>
+
+                            <!-- Minimo 3 -->
+                            <div class="rounded shadow-lg p-3 mb-3 d-flex">
+                                <div class="d-flex flex-column align-items-center justify-content-center px-5">
+                                    <h5>Valor</h5>
+                                    <h5>minimo</h5>
+                                </div>
+                                <div class="d-flex flex-fill flex-column align-items-center">
+                                    <h3 class="my-4">{{ json_analitics_3.min.0|floatformat:"2"|comaBydot }} {{json_analitics_3.var_name }}</h3>
+                                    <p class="text-danger">{{ json_analitics_3.min.1|date:"d M Y" }} {{json_analitics_3.min.1|date:"H:i" }}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Promedios -->
+                        <div class="d-flex flex-column flex-md-row gap-3 mb-5">
+                            <!-- Promedio 1 -->
+                            <div class="rounded shadow-lg p-3 mb-3 d-flex">
+                                <div class="d-flex flex-column align-items-center justify-content-center px-5">
+                                    <h5>Valor</h5>
+                                    <h5>promedio</h5>
+                                </div>
+                                <div class="d-flex flex-fill flex-column align-items-center">
+                                    <h3 class="my-4">{{ json_analitics_1.avantage|floatformat:"2"|comaBydot}} {{json_analitics_1.var_name }}</h3>
+                                    <p class="text-danger">{{ json_analitics_1.dates_avantage.0|date:"d M Y" }} - {{json_analitics_1.dates_avantage.1|date:"d M Y" }}</p>
+                                </div>
+                            </div>
+
+                            <!-- Promedio 2 -->
+                            <div class="rounded shadow-lg p-3 mb-3 d-flex">
+                                <div class="d-flex flex-column align-items-center justify-content-center px-5">
+                                    <h5>Valor</h5>
+                                    <h5>promedio</h5>
+                                </div>
+                                <div class="d-flex flex-fill flex-column align-items-center">
+                                    <h3 class="my-4">{{ json_analitics_2.avantage|floatformat:"2"|comaBydot}} {{json_analitics_2.var_name }}</h3>
+                                    <p class="text-danger">{{ json_analitics_2.dates_avantage.0|date:"d M Y" }} - {{json_analitics_2.dates_avantage.1|date:"d M Y" }}</p>
+                                </div>
+                            </div>
+
+                            <!-- Promedio 3 -->
+                            <div class="rounded shadow-lg p-3 mb-3 d-flex">
+                                <div class="d-flex flex-column align-items-center justify-content-center px-5">
+                                    <h5>Valor</h5>
+                                    <h5>promedio</h5>
+                                </div>
+                                <div class="d-flex flex-fill flex-column align-items-center">
+                                    <h3 class="my-4">{{ json_analitics_3.avantage|floatformat:"2"|comaBydot}} {{json_analitics_3.var_name }}</h3>
+                                    <p class="text-danger">{{ json_analitics_3.dates_avantage.0|date:"d M Y" }} - {{json_analitics_3.dates_avantage.1|date:"d M Y" }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Exportar -->
+                        <div class="d-flex justify-content-center mb-5">
+                            <a href="{% url 'reports_app:exportExel' exportExel.pk_place exportExel.pk_sensor exportExel.group exportExel.date1 exportExel.date2 %}"
+                                class="btn btn-outline-primary">Descarga de datos</a>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+</body>
+
+
+{% block scriptII %}
+
+
+
+
+
+
+
+
+
+{% endblock scriptII %}
+
+{% endblock content %}

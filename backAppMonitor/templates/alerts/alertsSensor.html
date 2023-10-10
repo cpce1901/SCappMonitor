@@ -1,0 +1,178 @@
+{% extends 'include/base.html' %}
+
+{% load static %}
+
+{% load extrasTags %}
+
+{% block title %}Energy-Ubicaciones{% endblock title %}
+
+{% block style %}
+
+<link rel="stylesheet" href="{% static 'css/alertsInit.css' %}">
+
+{% endblock style %}
+
+{% block script %}
+
+{% endblock script %}
+
+{% block content %}
+
+<body class="bg-light">
+
+    {% include 'include/header.html' %}
+
+    <div class="container">
+        <div class="row">
+            {% include 'include/aside.html' %}
+
+            <main class="ms-sm-auto col-xl-10 px-md-4 full">
+
+                <div class="m-4">
+                    <h1>Gestión de alarmas</h1>
+                    <p>Sensor N° {{ sensor }} en {{ sensor.located_sensor.place }}</p>
+                    <p>{{ sensor.detail }}</p>
+                </div>
+
+                <div class="d-flex flex-column align-items-center">
+                    {% if sensor.alerts.all %}
+
+                    {% for alert_type, alerts in alerts.items %}
+
+                    <div class="dropdown mb-2 use">
+                        <button class="btn btn-outline-primary w-100 dropdown-toggle" type="button"
+                            data-bs-toggle="dropdown">
+                            {{ alert_type }}
+                        </button>
+                        <div class="dropdown-menu w-100">
+
+                            {% for level in alerts %}
+                            <div class="d-flex flex-column">
+                                <div class="d-flex align-items-center justify-content-center gap-4 p-3 dropdown-item">
+                                    <li>{% if level.level == "1" %} High {% else %} Low {% endif %}</li>
+                                    <li>{{ level.value|comaBydot }}
+
+                                        {% if 'Tension' in alert_type %} V
+                                        {% elif 'Corriente' in alert_type %} A
+                                        {% elif 'Frecuencia' in alert_type %} Hz
+                                        {% else %}
+                                        {% endif %}
+                                    </li>
+                                    <li
+                                        class="{% if level.status %} text-success {% else %} text-danger {% endif %} text-center">
+                                        {% if level.status %} On {% else %} Off {% endif %}
+                                    </li>
+                                </div>
+                                <div class="d-flex align-items-center justify-content-center gap-3 p-3 dropdown-item">
+                                    <li class="d-flex justify-content-around gap-3">
+                                        <a href="{% url 'alerts_app:alertUpdateForm' sensor.number_sensor level.id %}"
+                                            class="btn btn-success">Editar</a>
+                                        <a href="{% url 'alerts_app:alertDeleteForm' sensor.number_sensor level.id %}"
+                                            class="btn btn-danger">Eliminar</a>
+                                    </li>
+                                </div>
+                            </div>
+
+                            {% if not forloop.last %}
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+
+                            {% endif %}
+
+                            {% endfor %}
+
+
+                        </div>
+                    </div>
+
+                    {% endfor %}
+
+                    {% else %}
+
+                </div>
+
+                {% if places %}
+
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            <div class="d-flex gap-3 justify-content-center">
+                                <a href="{% url 'alerts_app:alerts' %}" class="btn btn-primary mt-3">Volver</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {% endif %}
+
+                <div class="bg-white p-4 text-danger card ">
+                    <li class="fw-bold">No existen alertas para este sensor</li>
+                </div>
+
+                {% endif %}
+
+                {% if sensor %}
+
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            <div class="d-flex gap-3 justify-content-center">
+
+                                {% if not sensor.alerts.all.count >= 9 %}
+                                <a href="{% url 'alerts_app:alertCreateForm' sensor.number_sensor %}"
+                                    class="btn btn-success mt-3">Agregar</a>
+                                {% endif %}
+
+                                <a href="{% url 'alerts_app:gestionAlerts' %}" class="btn btn-primary mt-3">Volver</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {% endif %}
+
+                {{ alert_dict }}
+
+
+
+            </main>
+        </div>
+    </div>
+
+    <div>
+        {% if messages %}
+
+        {% for message in messages %}
+
+        {% if message.tags == "success" %}
+
+        <script>
+            Swal.fire({
+                title: 'Éxito',
+                text: '{{ message }}',
+                icon: 'success',
+                confirmButtonText: 'Cerrar'
+            });
+        </script>
+       
+
+        {% endif %}
+
+        {% endfor %}
+
+        {% endif %}
+
+    </div>
+</body>
+
+
+
+
+{% block scriptII %}
+
+
+
+{% endblock scriptII %}
+
+{% endblock content %}

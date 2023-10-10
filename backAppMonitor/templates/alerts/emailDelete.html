@@ -1,0 +1,62 @@
+{% extends 'include/base.html' %}
+
+{% load static %}
+
+{% block title %}Energy-Emais{% endblock title %}
+
+{% block style %}
+
+<link rel="stylesheet" href="{% static 'css/alertsInit.css' %}">
+
+{% endblock style %}
+
+{% block script %}
+
+{% endblock script %}
+
+{% block content %}
+
+<body class="bg-light">
+
+    {% include 'include/header.html' %}
+
+    <div class="container">
+        <div class="row">
+            {% include 'include/aside.html' %}
+
+            <main class="ms-sm-auto col-xl-10 px-md-4 full">
+
+                <div class="m-4">
+                    <h1>Gestión de Correos</h1>
+                    <p class="text-success">Notificaciones</p>
+                </div>
+
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            <div class="d-flex gap-3 justify-content-center">
+
+                                <form method="post">{% csrf_token %}
+                                    <p>Are you sure you want to delete "{{ object }}"?</p>
+                                    {{ form }}
+                                    <input type="submit" value="Confirm">
+                                </form>
+
+                                <a href="{% url 'alerts_app:emailList' %}" class="btn btn-primary mt-3">Volver</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+</body>
+
+
+{% block scriptII %}
+
+
+
+{% endblock scriptII %}
+
+{% endblock content %}

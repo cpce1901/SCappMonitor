@@ -1,0 +1,52 @@
+{% extends 'include/base.html' %}
+
+{% load static %}
+
+{% block title %}Update Pass{% endblock title %}
+
+{% block style %}
+
+{% endblock style %}
+
+{% block content %}
+
+<div class="container py-5">
+  <form method="post">{% csrf_token %}
+    <h1 class="h3 mb-3 fw-normal">Cambio de clave de {{ user.first_name }}</h1>
+
+    <div class="form-floating py-2">
+      {{form.password1}}
+      <label for="floatingInput">Contraseña actual</label>
+    </div>
+    <div class="form-floating py-2">
+      {{form.password2}}
+      <label for="floatingPassword">Nueva contraseña</label>
+    </div>
+
+    <button class="w-100 btn btn-lg btn-primary" type="submit">Ingresar</button>
+    <p class="mt-5 mb-3 text-muted">&copy; cpce 2023</p>
+  </form>
+
+</div>
+
+<div>
+  {% if messages %}
+  {% for message in messages %}
+  <script>
+    Swal.fire({
+      title: 'Error',
+      text: '{{ message }}',
+      icon: 'error',
+      confirmButtonText: 'Cerrar'
+    })
+  </script>
+  {% endfor %}
+  {% endif %}
+</div>
+
+
+{% endblock content %}
+
+{% block script %}
+
+{% endblock script %}

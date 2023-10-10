@@ -1,0 +1,94 @@
+/* Estilos base para las tarjetas de alerta */
+.card-alert {
+    background-color: white;
+    transition: background-color 300ms, box-shadow 300ms, transform 300ms, border 300ms;
+    box-shadow: 0px 30px 50px -40px rgba(70, 71, 70, 0.68);
+    border-radius: 2%;
+    max-width: 100%;
+    aspect-ratio: 1/1;
+    overflow: hidden;
+}
+
+.use {
+    width: 100%;
+}
+
+@media (min-width: 768px) {
+    .card-alert{
+        width: 30%;
+    }
+
+    .use{
+        width: 70%;
+    }
+}
+
+/* Estilo de tarjeta verde */
+.card-green {
+    border: 2px solid rgba(47, 223, 4, 0.68);
+}
+
+.card-green :first-child {
+    color: rgba(47, 223, 4, 0.68);
+    font-size: x-large;
+}
+
+.card-green :last-child {
+    color: black;
+    font-size: small;
+    font-weight: lighter;
+}
+
+.card-green:hover {
+    background-color: rgba(47, 223, 4, 0.68);
+    border: 2px solid rgba(47, 223, 4, 0.68);
+    box-shadow: 0px 30px 50px -40px rgba(0, 0, 0, 0.68);
+}
+
+/* Estilo de tarjeta naranja */
+.card-orange {
+    border: 2px solid rgba(223, 154, 4, 0.68);
+}
+
+.card-orange :first-child {
+    color: rgba(223, 154, 4, 0.68);
+    font-size: x-large;
+}
+
+.card-orange :last-child {
+    color: black;
+    font-size: small;
+    font-weight: lighter;
+}
+
+.card-orange:hover {
+    background-color: rgba(223, 154, 4, 0.68);
+    border: 2px solid rgba(223, 154, 4, 0.68);
+    box-shadow: 0px 30px 50px -40px rgba(0, 0, 0, 0.68);
+}
+
+/* Estilos hover comunes para tarjetas verdes y naranjas */
+.card-green:hover :first-child,
+.card-orange:hover :first-child {
+    color: white;
+    transform: scale(1.05);
+}
+
+.card-green:hover :last-child,
+.card-orange:hover :last-child {
+
+    font-weight: normal;
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus{
+    transform: all;
+    transition: 250ms;
+    background-color: rgb(191, 245, 191);
+    font-weight: bold;
+}
+
+.table > tbody > tr > td:nth-child(3){
+    white-space: nowrap;
+}
+

@@ -1,0 +1,48 @@
+{% extends 'include/base.html' %}
+
+{% load static %}
+
+{% block title %}Energy-Ubicaciones{% endblock title %}
+
+{% block style %}
+
+<link rel="stylesheet" href="{% static 'css/alertsInit.css' %}">
+
+{% endblock style %}
+
+{% block script %}
+
+{% endblock script %}
+
+{% block content %}
+
+<div class="modal-dialog modal-lg" role="document" tabindex="-1">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Borrar {{ sensor }}  {{ pk }}</h2>
+            <button class="close" type="button" data-bs-dismiss="modal" aria-label="close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <form action="{% url 'alerts_app:alertDeleteForm' sensor pk %}" method="POST">
+            <div class="modal-body">
+                {% csrf_token %}
+                <p>Are you sure you want to delete "{{ object }}"?</p>
+                {{ form }}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Delete</button>
+
+            </div>
+        </form>
+    </div>
+</div>
+
+{% block scriptII %}
+
+
+
+{% endblock scriptII %}
+
+{% endblock content %}

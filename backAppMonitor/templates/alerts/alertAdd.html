@@ -1,0 +1,104 @@
+{% extends 'include/base.html' %}
+
+{% load static %}
+
+{% block title %}Energy-Emais{% endblock title %}
+
+{% block style %}
+
+<link rel="stylesheet" href="{% static 'css/alertsInit.css' %}">
+
+{% endblock style %}
+
+{% block script %}
+
+{% endblock script %}
+
+{% block content %}
+
+<body class="bg-light">
+
+    {% include 'include/header.html' %}
+
+    <div class="container">
+        <div class="row">
+            {% include 'include/aside.html' %}
+
+            <main class="ms-sm-auto col-xl-10 px-md-4 full">
+
+                <div class="m-4">
+                    <h1>Gestión de Alertas</h1>
+                    <p class="text-success">Agregar alerta</p>
+                </div>
+
+                <div class="container">
+                    <form action="{% url 'alerts_app:alertCreateForm' sensor %}" method="POST"
+                        class=" d-flex flex-column">
+                        {% csrf_token %}
+
+                        <div class="rounded shadow-lg py-4 px-5 mb-5 d-flex flex-column gap-3">
+                            <div class="d-flex flex-column">
+                                {{ form.type_name.label }}
+                                {{ form.type_name }}
+                            </div>
+                            <div class="d-flex flex-column">
+                                {{ form.level.label }}
+                                {{ form.level }}
+                            </div>
+                            <div class="d-flex flex-column">
+                                {{ form.limit.label }}
+                                {{ form.limit }}
+                            </div>
+                            <div class="d-flex gap-5">
+                                {{ form.status.label }}
+                                {{ form.status }}
+                            </div>
+
+                        </div>
+
+                        <div class="d-flex justify-content-around">
+                            <a href="{% url 'alerts_app:gestionAlertsSensor' sensor %}"
+                                class="btn btn-secondary">Volver</a>
+                            <button type="submit" class="btn btn-primary">Crear</button>
+                        </div>
+
+                    </form>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <div>
+        {% if messages %}
+
+        {% for message in messages %}
+
+        {% if message.tags == "error" %}
+
+        <script>
+            Swal.fire({
+                title: 'Error',
+                text: '{{ message }}',
+                icon: 'error',
+                confirmButtonText: 'Cerrar'
+            });
+        </script>
+
+        
+        {% endif %}
+
+        {% endfor %}
+
+        {% endif %}
+
+    </div>
+</body>
+
+
+{% block scriptII %}
+
+
+
+{% endblock scriptII %}
+
+{% endblock content %}
