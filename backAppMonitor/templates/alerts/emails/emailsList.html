@@ -107,6 +107,31 @@
             </main>
         </div>
     </div>
+
+    <div>
+        {% if messages %}
+
+        {% for message in messages %}
+
+        {% if message.tags == "success" %}
+
+        <script>
+            Swal.fire({
+                title: 'Éxito',
+                text: '{{ message }}',
+                icon: 'success',
+                confirmButtonColor: '#28a745',
+                confirmButtonText: 'Cerrar'
+            });
+        </script>
+
+        {% endif %}
+
+        {% endfor %}
+
+        {% endif %}
+
+    </div>
 </body>
 
 {% endblock content %}

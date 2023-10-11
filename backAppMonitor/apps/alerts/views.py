@@ -1,3 +1,5 @@
+from django.forms.models import BaseModelForm
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.views.generic import (
     TemplateView,
@@ -270,10 +272,23 @@ class EmailList(ListView):
 
 
 class EmailAdd(CreateView):
-    template_name = "alerts/emails/emailAdd.html"    
+    template_name = "alerts/emails/emailAdd.html"
     form_class = EmailAddForm
     model = EmailNotifications
     success_url = reverse_lazy("alerts_app:emailList")
+
+    def form_valid(self, form):
+        if form.is_valid():
+            email = form.cleaned_data["email"]
+            
+            messages.success(
+                self.request,
+                f"Email {email} agregado.",
+            )
+
+            return super().form_valid(form)
+
+        return super().form_invalid(form)
 
 
 class EmailDelete(DeleteView):
@@ -281,9 +296,34 @@ class EmailDelete(DeleteView):
     model = EmailNotifications
     success_url = reverse_lazy("alerts_app:emailList")
 
+    def form_valid(self, form):
+        if form.is_valid():
+
+            messages.success(
+                self.request,
+                f"Registro eliminado.",
+            )
+
+            return super().form_valid(form)
+
+        return super().form_invalid(form)
+
 
 class EmailUpdate(UpdateView):
     template_name = "alerts/emails/emailUpdate.html"
     form_class = EmailUpdateForm
     model = EmailNotifications
     success_url = reverse_lazy("alerts_app:emailList")
+
+    def form_valid(self, form):
+        if form.is_valid():
+            registro = form.cleaned_data["name"]
+            
+            messages.success(
+                self.request,
+                f"Registro {registro} actualizado con exito.",
+            )
+
+            return super().form_valid(form)
+
+        return super().form_invalid(form)
