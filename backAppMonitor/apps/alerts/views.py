@@ -18,11 +18,11 @@ from django.contrib import messages
 
 # Create your views here.
 class AlertInit(TemplateView):
-    template_name = "alerts/alerts.html"
+    template_name = "alerts/common/alerts.html"
 
 
 class AlertsSelect(TemplateView):
-    template_name = "alerts/alertSelect.html"
+    template_name = "alerts/common/alertSelect.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -33,8 +33,8 @@ class AlertsSelect(TemplateView):
 # CRUD Emails
 
 
-class AlertsGestion(TemplateView):
-    template_name = "alerts/alertsSensor.html"
+class AlertsList(TemplateView):
+    template_name = "alerts/alerts/alertsList.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -63,7 +63,7 @@ class AlertsGestion(TemplateView):
 
 
 class AlertCreateForms(FormView):
-    template_name = "alerts/alertAdd.html"
+    template_name = "alerts/alerts/alertAdd.html"
     form_class = AlertsAddForm
 
     # Datos que se envian a template directamente
@@ -149,7 +149,7 @@ class AlertCreateForms(FormView):
 
 
 class AlertsUpdate(UpdateView):
-    template_name = "alerts/alertUpdate.html"
+    template_name = "alerts/alerts/alertUpdate.html"
     model = Alerts
     form_class = AlertsUpdateForm
 
@@ -237,7 +237,7 @@ class AlertsUpdate(UpdateView):
 
 
 class AlertDeleteForm(DeleteView):
-    template_name = "alerts/alertDelete.html"
+    template_name = "alerts/alerts/alertDelete.html"
     model = Alerts
 
     def get_context_data(self, **kwargs):
@@ -264,26 +264,26 @@ class AlertDeleteForm(DeleteView):
 
 
 class EmailList(ListView):
-    template_name = "alerts/emailsList.html"
+    template_name = "alerts/emails/emailsList.html"
     model = EmailNotifications
     context_object_name = "emails"
 
 
 class EmailAdd(CreateView):
-    template_name = "alerts/emailAdd.html"
+    template_name = "alerts/emails/emailAdd.html"
     model = EmailNotifications
     fields = "__all__"
     success_url = reverse_lazy("alerts_app:emailList")
 
 
 class EmailDelete(DeleteView):
-    template_name = "alerts/emailDelete.html"
+    template_name = "alerts/emails/emailDelete.html"
     model = EmailNotifications
     success_url = reverse_lazy("alerts_app:emailList")
 
 
 class EmailUpdate(UpdateView):
-    template_name = "alerts/emailUpdate.html"
+    template_name = "alerts/emails/emailUpdate.html"
     model = EmailNotifications
     fields = "__all__"
     success_url = reverse_lazy("alerts_app:emailList")
