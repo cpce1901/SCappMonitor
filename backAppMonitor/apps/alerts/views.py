@@ -11,7 +11,7 @@ from django.urls import reverse_lazy
 from .models import Alerts, EmailNotifications
 from apps.sensors.models import Sensor
 from apps.sensors.models import Sensor, Located
-from .form import AlertsAddForm, AlertsUpdateForm
+from .form import AlertsAddForm, AlertsUpdateForm, EmailAddForm, EmailUpdateForm
 from collections import defaultdict
 from django.contrib import messages
 
@@ -270,9 +270,9 @@ class EmailList(ListView):
 
 
 class EmailAdd(CreateView):
-    template_name = "alerts/emails/emailAdd.html"
+    template_name = "alerts/emails/emailAdd.html"    
+    form_class = EmailAddForm
     model = EmailNotifications
-    fields = "__all__"
     success_url = reverse_lazy("alerts_app:emailList")
 
 
@@ -284,6 +284,6 @@ class EmailDelete(DeleteView):
 
 class EmailUpdate(UpdateView):
     template_name = "alerts/emails/emailUpdate.html"
+    form_class = EmailUpdateForm
     model = EmailNotifications
-    fields = "__all__"
     success_url = reverse_lazy("alerts_app:emailList")
