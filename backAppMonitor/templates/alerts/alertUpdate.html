@@ -2,7 +2,7 @@
 
 {% load static %}
 
-{% block title %}Energy-Ubicaciones{% endblock title %}
+{% block title %}Energy-Emais{% endblock title %}
 
 {% block style %}
 
@@ -16,32 +16,82 @@
 
 {% block content %}
 
-<div class="modal-dialog modal-lg" role="document" tabindex="-1">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h2>Edicion {{ sensor }}  {{ pk }}</h2>
-            <button class="close" type="button" data-bs-dismiss="modal" aria-label="close">
-                <span aria-hidden="true">&times;</span>
-            </button>
+<body class="bg-light">
+
+    {% include 'include/header.html' %}
+
+    <div class="container">
+        <div class="row">
+            {% include 'include/aside.html' %}
+
+            <main class="ms-sm-auto col-xl-10 px-md-4 full">
+
+                <div class="m-4">
+                    <h1>Gestión de Alertas</h1>
+                    <p class="text-success">Actualizando registro de alerta del sensor {{ sensor.number_sensor }}.</p>
+                </div>
+
+                <div class="container">
+                    <form action="{% url 'alerts_app:alertUpdateForm' sensor.id pk %}" method="POST"
+                        class=" d-flex flex-column">
+                        {% csrf_token %}
+
+                        <div class="rounded shadow-lg py-4 px-5 mb-5 d-flex flex-column gap-3">
+                            <div class="d-flex flex-column">
+                                {{ form.type_name.label }}
+                                {{ form.type_name }}
+                            </div>
+                            <div class="d-flex flex-column">
+                                {{ form.level.label }}
+                                {{ form.level }}
+                            </div>
+                            <div class="d-flex flex-column">
+                                {{ form.limit.label }}
+                                {{ form.limit }}
+                            </div>
+                            <div class="d-flex gap-5">
+                                {{ form.status.label }}
+                                {{ form.status }}
+                            </div>
+
+                        </div>
+
+                        <div class="d-flex justify-content-around">
+                            <a href="{% url 'alerts_app:gestionAlertsSensor' sensor %}"
+                                class="btn btn-secondary">Volver</a>
+                            <button type="submit" class="btn btn-primary">Actualizar</button>
+                        </div>
+
+                    </form>
+                </div>
+            </main>
         </div>
-        <form action="{% url 'alerts_app:alertUpdateForm' sensor pk %}" method="POST">
-            <div class="modal-body">
-                {% csrf_token %}
-                {{ form.as_p }}
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary">Close</button>
-                <button type="submit" class="btn btn-primary">Save changes</button>
-
-            </div>
-        </form>
     </div>
-</div>
-{% block scriptII %}
+
+    <div>
+        {% if messages %}
+
+        {% for message in messages %}
+
+        {% if message.tags == "error" %}
+
+        <script>
+            Swal.fire({
+                title: 'Error',
+                text: '{{ message }}',
+                icon: 'error',
+                confirmButtonText: 'Cerrar'
+            });
+        </script>
 
 
+        {% endif %}
 
-{% endblock scriptII %}
+        {% endfor %}
+
+        {% endif %}
+
+    </div>
+</body>
 
 {% endblock content %}
-

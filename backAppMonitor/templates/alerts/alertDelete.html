@@ -2,7 +2,7 @@
 
 {% load static %}
 
-{% block title %}Energy-Ubicaciones{% endblock title %}
+{% block title %}Energy-Emais{% endblock title %}
 
 {% block style %}
 
@@ -16,33 +16,48 @@
 
 {% block content %}
 
-<div class="modal-dialog modal-lg" role="document" tabindex="-1">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h2>Borrar {{ sensor }}  {{ pk }}</h2>
-            <button class="close" type="button" data-bs-dismiss="modal" aria-label="close">
-                <span aria-hidden="true">&times;</span>
-            </button>
+<body class="bg-light">
+
+    {% include 'include/header.html' %}
+
+    <div class="container">
+        <div class="row">
+            {% include 'include/aside.html' %}
+
+            <main class="ms-sm-auto col-xl-10 px-md-4 full">
+
+                <div class="m-4">
+                    <h1>Gestión de alarmas</h1>
+                    <p class="text-danger">Eliminando alerta</p>
+                </div>
+
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            <div class="d-flex gap-3 justify-content-center">
+
+                                <form method="post">
+                                    {% csrf_token %}
+                                    <div class="d-flex flex-column align-items-center mb-4">
+                                        <p>¿Estás seguro de eliminar el registro?</p>
+                                        <p>"{{ object }}"?</p>
+
+                                    </div>
+                                    <div class="d-flex justify-content-center gap-5">
+                                        <input type="submit" value="Confirm" class="btn btn-danger">
+                                        <a href="{% url 'alerts_app:gestionAlertsSensor' sensor %}"
+                                            class="btn btn-primary">Volver</a>
+                                    </div>
+
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
         </div>
-        <form action="{% url 'alerts_app:alertDeleteForm' sensor pk %}" method="POST">
-            <div class="modal-body">
-                {% csrf_token %}
-                <p>Are you sure you want to delete "{{ object }}"?</p>
-                {{ form }}
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Delete</button>
-
-            </div>
-        </form>
     </div>
-</div>
-
-{% block scriptII %}
-
-
-
-{% endblock scriptII %}
+</body>
 
 {% endblock content %}

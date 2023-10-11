@@ -132,7 +132,7 @@ class AlertCreateForms(FormView):
         alert_type_name = alert_type_choices.get(type_name, "Desconocido")
         level_name = level_choices.get(level, "Desconocido")
 
-        # mensaje de error en pantalla
+        # mensaje de success en pantalla
         messages.success(
             self.request,
             f"La alerta tipo {alert_type_name} de nivel {level_name} ha sido creada con exito.",
@@ -153,14 +153,17 @@ class AlertsUpdateForms(UpdateView):
     model = Alerts
     fields = ["type_name", "level", "limit", "status"]
 
+    # Datos que se envian a template directamente
     def get_context_data(self, **kwargs):
         sensor_name = self.kwargs["sen"]
         pk = self.kwargs["pk"]
+        sensor = Sensor.objects.get(id=sensor_name)
         context = super().get_context_data(**kwargs)
-        context["sensor"] = sensor_name
+        context["sensor"] = sensor
         context["pk"] = pk
         return context
 
+    # Asignamos los datos iniciales al formulario
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         alert_instance = get_object_or_404(Alerts, pk=self.kwargs["pk"])
@@ -171,14 +174,32 @@ class AlertsUpdateForms(UpdateView):
         }
         return kwargs
 
+    # Procesamiento de formulario valido
     def form_valid(self, form):
-        print("formulario")
+        # Nombre para variables de mensaje
+        alert_type_name = ""
+        level_choices = ""
+
+        # Definimos estructura de datos
+        alert_type_choices = {
+            "1": "Tension Monofasica",
+            "2": "Tension trifasica",
+            "3": "Corriente de fase",
+            "4": "Potencia de fase",
+            "5": "Potencia activa",
+            "6": "Factor de potencia",
+            "7": "Frecuencia",
+        }
+
+        level_choices = {"0": "Low", "1": "High"}
+
         type_name = form.cleaned_data["type_name"]
         level = form.cleaned_data["level"]
 
         sensor_name = self.kwargs["sen"]
         sensor_instance = Sensor.objects.get(number_sensor=sensor_name)
 
+        # Creamos una instancia que expluya la actual informacion conseguida
         existing_alerts = Alerts.objects.filter(
             sensor=sensor_instance,
             type_name=type_name,
@@ -186,33 +207,35 @@ class AlertsUpdateForms(UpdateView):
         ).exclude(pk=self.object.pk)
 
         if existing_alerts.exists():
-            alert_type_choices = {
-                "1": "Tension Monofasica",
-                "2": "Tension trifasica",
-                "3": "Corriente de fase",
-                "4": "Potencia de fase",
-                "5": "Potencia activa",
-                "6": "Factor de potencia",
-                "7": "Frecuencia",
-            }
-
-            level_choices = {"0": "Low", "1": "High"}
-
+            # Obtenemos los datos para mostrar en el mensaje de error
             alert_type_name = alert_type_choices.get(type_name, "Desconocido")
             level_name = level_choices.get(level, "Desconocido")
 
-            form.add_error(
-                None,
+            # mensaje de error en pantalla
+            messages.error(
+                self.request,
                 f"Ya existe una alerta de {alert_type_name} con nivel {level_name}.",
             )
             return self.form_invalid(form)
 
+        # Creamos un guardado falso para continuar con el flujo de trabajo
         self.object = form.save(commit=False)
         self.object.sensor = sensor_instance
         self.object.save()
 
+        # Obtenemos los datos para mostrar en el mensaje de error
+        alert_type_name = alert_type_choices.get(type_name, "Desconocido")
+        level_name = level_choices.get(level, "Desconocido")
+
+        # mensaje de success en pantalla
+        messages.success(
+            self.request,
+            f"La alerta tipo {alert_type_name} de nivel {level_name} ha sido creada con exito.",
+        )
+
         return super().form_valid(form)
 
+    # Redireccion si todo esta bien
     def get_success_url(self):
         sensor_name = self.kwargs["sen"]
         return reverse_lazy(
@@ -234,6 +257,11 @@ class AlertDeleteForm(DeleteView):
 
     def get_success_url(self):
         sensor_name = self.kwargs["sen"]
+        # mensaje de success en pantalla
+        messages.success(
+            self.request,
+            f"el registro ha sido eliminado con exito.",
+        )
         return reverse_lazy(
             "alerts_app:gestionAlertsSensor", kwargs={"pk": sensor_name}
         )
