@@ -9,6 +9,14 @@ class AlertsAddForm(forms.ModelForm):
         model = Alerts
         fields = ["type_name", "level", "limit", "status"]
 
+        # Definimos clases de bostrap
+        widgets = {
+            "type_name": forms.Select(attrs={"class": "form-select"}),
+            "level": forms.Select(attrs={"class": "form-select"}),
+            "limit": forms.NumberInput(attrs={"class": "form-control"}),
+            "status": forms.CheckboxInput(attrs={"class": "form-check-input"}),
+        }
+
     def clean_limit(self):
         limit = self.cleaned_data["limit"]
         if limit < 0:
@@ -17,7 +25,15 @@ class AlertsAddForm(forms.ModelForm):
         return limit
 
 
+class AlertsUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Alerts
+        fields = ["type_name", "level", "limit", "status"]
 
-        
-
-    
+        # Definimos clases de bostrap
+        widgets = {
+            "type_name": forms.Select(attrs={"class": "form-select"}),
+            "level": forms.Select(attrs={"class": "form-select"}),
+            "limit": forms.NumberInput(attrs={"class": "form-control"}),
+            "status": forms.CheckboxInput(attrs={"class": "form-check-input"}),
+        }
