@@ -1,30 +1,70 @@
 // Función para crear el gráfico de líneas
 function createLineChart(context, data) {
 
-    new Chart(context, {
-        type: "line",
-        data: {
-            labels: data.data.labels,
-            datasets: [
-                {
-                    label: data.data.name,
-                    data: data.data.data,
-                    borderWidth: 1,
-                    fill: false,
-                    tension: 0,
-                    pointRadius: 0,
-                    pointHoverRadius: 7,
-                },
-                
-            ],
+    const labels = data.data.labels;
+    const datasetData = data.data.data;
+
+
+    const chartData = {
+        labels: labels,
+        datasets: [
+            {
+                label: data.data.name,  // Deberías usar data.data.name en lugar de labels
+                data: datasetData,
+                borderWidth: 2,
+                fill: false,
+                tension: 0,
+                pointRadius: 0,
+                pointHoverRadius: 7,
+                borderColor: "rgba(255, 99, 132, 1)",
+                backgroundColor: "rgba(255, 99, 132, 0.2)",
+            },
+        ],
+    };
+
+    const chartConfig = {
+        responsive: true,
+        maintainAspectRatio: false,
+        legend: {
+            display: false,
         },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: false,
+        scales: {
+            x: {
+                title: { // Agrega un nombre al eje Y
+                    display: true,
+                    text: "HRS"
+                },
+                type: "time",
+                time: {
+                    unit: "hour",
+                    stepSize: 1,
+                    displayFormats: {
+                        hour: "HH:00"
+                    },
+
+                },
+            },
+
+            y: {
+                beginAtZero: false,
+                title: { // Agrega un nombre al eje Y
+                    display: true,
+                    text: data.data.unit
+                },
+                ticks: {
+                    // Include a dollar sign in the ticks
+                    callback: function (value, index, ticks) {
+                        return value;
+                    },
                 },
             },
         },
+    };
+
+    new Chart(context, {
+        type: "line",
+        data: chartData,  // Cambia 'data' a 'chartData'
+        options: chartConfig,  // Cambia 'option' a 'options'
     });
 }
 

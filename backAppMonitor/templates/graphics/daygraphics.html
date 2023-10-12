@@ -12,7 +12,9 @@
 
 {% block script %}
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@^3"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@^2"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-moment@^1"></script>
 <script src="{% static 'js/chart-script-today.js' %}"></script>
 
 {% endblock script %}
@@ -33,34 +35,36 @@
             <main class="ms-sm-auto col-xl-10 px-md-4">
                 <div class="m-4">
                     <h1>Gráfico diario</h1>
+                    <h4>{{ var.0 }}</h4>
+                    <p class="text-success">{{ date }}</p>
                 </div>
 
-                <div class="d-flex flex-column flex-md-row align-items-center gap-5">
+                <div class="d-flex flex-column flex-lg-row justify-content-lg-center gap-4">
 
                     <!-- Place imagen for sensor -->
-                    <div class="flex-grow-5 flex-shrink-1 align-self-start justify-content-center">
-                        <div class="card h-auto shadow p-3 mb-2 bg-body-white rounded">
-                            <div class="desing d-md-none d-lg-block">
+                    <div class="container-fluid dimension">
+                        <div class="card h-auto shadow pt-3 bg-body-white rounded text-center">
+                            <div class="desing d-none d-lg-block">
                                 <img src="{{ place.image.url }}" class="card-img-top" />
                             </div>
                             <div class="card-body">
                                 <h5 class="card-title">{{ place.place }}</h5>
-                                <p class="card-text">
+                                <p class="mb-0">
+                                    Sensor: N°{{ sensor.number_sensor }}
+                                </p>
+                                <p class="text-success mb-1">
                                     Sensor: {{ sensor.detail }}
                                 </p>
+                                <p class="text-primary fw-bold">{{ var.1 }}</p>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Lectures for sensor -->
-
-                    <div class="container h-100 d-inline-block ">
-
-                        <!-- Grafico -->
-                        <div class="rounded shadow-lg p-3 my-3">
-                            <canvas id="chart_0" data-var="{{ today }}"></canvas>
-                        </div>
+                    <!-- Grafico -->
+                    <div class="container-fluid card rounded shadow-lg mb-5" style="width: 100%; height: 50vh;">
+                        <canvas id="chart_0" data-var="{{ today }}"></canvas>
                     </div>
+
                 </div>
             </main>
         </div>

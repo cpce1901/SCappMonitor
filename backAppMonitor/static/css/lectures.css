@@ -51,4 +51,19 @@
 }
 
 
+.dimension {
+    width: 100%;
+}
 
+
+@media (min-width: 992px) {
+    .dimension {
+        width: 40%;
+    }
+}
+
+@media (min-width: 1200px) {
+    .dimension {
+        width: 40%;
+    }
+}

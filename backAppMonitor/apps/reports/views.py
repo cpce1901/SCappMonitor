@@ -135,6 +135,7 @@ class ReportFinal(LoginRequiredMixin, TemplateView):
             "avantage": avantage_value,
             "dates_avantage": vantage_range_date,
             "var_name": name,
+            "var": var_name,
         }
 
         return data
