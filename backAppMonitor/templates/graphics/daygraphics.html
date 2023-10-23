@@ -60,10 +60,36 @@
                         </div>
                     </div>
 
+
+                    {% if show %}
+
                     <!-- Grafico -->
                     <div class="container-fluid card rounded shadow-lg mb-5" style="width: 100%; height: 50vh;">
                         <canvas id="chart_0" data-var="{{ today }}"></canvas>
                     </div>
+
+                    {% else %}
+
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-12 mb-4">
+                                <h3 class="text-warning">Advertencia</h3>
+                            </div>
+                            <div class="col-12">
+                                <h5>
+                                    Ha ocurrido un error interno, es posible que no existan registros para el dia de
+                                    hoy.
+
+                                </h5>
+                                <h5>
+                                    Si esta seguro de la existencia de sensores y registros porfavor comuniquese con su
+                                    administrador de sistema.
+                                </h5>
+                            </div>
+                        </div>
+                    </div>
+
+                    {% endif %}
 
                 </div>
             </main>

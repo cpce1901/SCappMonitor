@@ -2,7 +2,7 @@ from django.shortcuts import redirect
 from django.http import HttpResponse
 from django.views.generic import TemplateView, FormView, View
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.urls import reverse_lazy, reverse
+from django.urls import reverse_lazy
 from django.db.models import Count
 from apps.sensors.models import Located, Sensor
 from apps.lectures.models import Measures
@@ -234,28 +234,37 @@ class ReportFinal(LoginRequiredMixin, TemplateView):
             sensor_id, detail_3, date1, date2
         )
 
-        # Creamos los datos json con los datos recibidos desde db
-        json1 = self.create_json(datos1, detail_1)
-        json2 = self.create_json(datos2, detail_2)
-        json3 = self.create_json(datos3, detail_3)
+        try:
+            # Creamos los datos json con los datos recibidos desde db
+            json1 = self.create_json(datos1, detail_1)
+            json2 = self.create_json(datos2, detail_2)
+            json3 = self.create_json(datos3, detail_3)
 
-        analitic_1 = self.analitic_values(datos1, detail_1)
-        analitic_2 = self.analitic_values(datos2, detail_2)
-        analitic_3 = self.analitic_values(datos3, detail_3)
+            analitic_1 = self.analitic_values(datos1, detail_1)
+            analitic_2 = self.analitic_values(datos2, detail_2)
+            analitic_3 = self.analitic_values(datos3, detail_3)
+
+            # Envio de analitica
+            context["json_analitics_1"] = analitic_1
+            context["json_analitics_2"] = analitic_2
+            context["json_analitics_3"] = analitic_3
+            # Variable para mostrar data
+            show = True
+
+        except:
+            show = False
 
         # Transformamos datos de fechas en un datetime object
         date1 = datetime.datetime.strptime(date1, "%Y-%m-%d+00:00:00")
         date2 = datetime.datetime.strptime(date2, "%Y-%m-%d+00:00:00")
 
         # Envio de datos hacia el template con los datos de grafico
+        context["show"] = show
+
+        # Envio de datos hacia el template con los datos de grafico
         context["json_datos_1"] = json1
         context["json_datos_2"] = json2
         context["json_datos_3"] = json3
-
-        # Envio de analitica
-        context["json_analitics_1"] = analitic_1
-        context["json_analitics_2"] = analitic_2
-        context["json_analitics_3"] = analitic_3
 
         context["sensor"] = Sensor.objects.get(id=sensor_id)
         context["today"] = today
@@ -280,7 +289,7 @@ class ExportExcel(View):
         <int:pk_place>/<int:pk_sensor>/<str:group>/<str:date1>/<str:date2>/
 
         """
-
+        
         # Dispara la tarea Celery para generar el archivo Excel
         result = export_excel_task.delay(
             sensor=sensor_id, vars=vars_group, date1=date1, date2=date2
