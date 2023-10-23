@@ -121,7 +121,7 @@ class ReportFinal(LoginRequiredMixin, TemplateView):
             name = "V"
         elif "i" in var_name.lower():
             name = "A"
-        elif "p" in var_name.lower() or var_name.lower() == "pa":
+        elif var_name.lower() == "p" or var_name.lower() == "pa":
             name = "Kw"
 
         max_value = max(query)

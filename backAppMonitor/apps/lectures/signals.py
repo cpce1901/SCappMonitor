@@ -5,45 +5,28 @@ from apps.sensors.models import Sensor
 from .tasks import send_email_alert
 
 
-"""def validate(level, limit, names, *args):
-
-    for i in args:
-        print(i)
-
-    mayor_menor = None  # Variable para rastrear cuál es mayor o menor
-
-    if level == "0":
-        if x < limit:
-            mayor_menor = f"{names[0]} {x} es menor al límite {limit} de alarma seteado"
-        elif y < limit:
-            mayor_menor = f"{names[1]} {y} es menor al límite {limit} de alarma seteado"
-        elif z < limit:
-            mayor_menor = f"{names[2]} {z} es menor al límite {limit} de alarma seteado"
-    elif level == "1":
-        if x > limit:
-            mayor_menor = f"{names[0]} {x} es mayor al límite {limit} de alarma seteado"
-        elif y > limit:
-            mayor_menor = f"{names[1]} {y} es mayor al límite {limit} de alarma seteado"
-        elif z > limit:
-            mayor_menor = f"{names[2]} {z} es mayor al límite {limit} de alarma seteado"
-
-    if mayor_menor:
-        send_email_alert.delay(mayor_menor)
-        print(f"Enviar correo: {mayor_menor}")
-
-    else:
-        print("Enviar correo: Valores normalizados")
-
-    return mayor_menor
-"""
+# La funcion evalua, el nivel alto o bajo, su numero limite,
+# el name es el nombre de la variable o variables
+# y los argumentos son los valores recividos en el endpoint
 
 
 def validate(level, limit, names, *args):
-    mayor_menor = None  # Variable para rastrear cuál es mayor o menor
+    # Variable para rastrear cuál es mayor o menor
+    mayor_menor = None
+
+    # Si nivel contiene un valor, aunque siempre deberia tenerlo
+    # 0 bajo
+    # 1 alto
 
     if level == "0" or level == "1":
+        # Realiza un for para revisar todos los valores en los argumentos pasados
+        # i corresponde al nombre de los argumentos entregados
+        # value corresponde al valor numerico en esos argumentos
         for i, value in enumerate(args):
+            # Realliza revision en caso de un nivel bajo 
+            # Realiza revision si el limite esta bajo el limite
             if level == "0" and value < limit:
+                # Crea mensaje en caso de ser verdadera esta consicion y sale del ciclo
                 mayor_menor = (
                     f"{names[i]} {value} es menor al límite {limit} de alarma seteado"
                 )

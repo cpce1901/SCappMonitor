@@ -5,9 +5,16 @@ DEBUG = False
 ALLOWED_HOSTS = []
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    "default": {
+        "ENGINE": "django.db.backends.mysql",
+        "NAME": "scollegeProd",  # Nombre DB
+        "USER": "cpce1901",  # Nombre usuario
+        "PASSWORD": "cpce1901",  # Password
+        "HOST": "localhost",
+        "PORT": "3306",
+        "OPTIONS": {
+            "sql_mode": "STRICT_TRANS_TABLES",
+        },
     }
 }
 
@@ -16,3 +23,14 @@ STATIC_ROOT = BASE_DIR / 'static/'
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media/'
+
+# Celery settings
+CELERY_BROKER_URL = "redis://localhost:6379/0"
+CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
+
+CELERY_ACCEPT_CONTENT = ["json"]
+CELERY_TASK_SERIALIZER = "json"
+CELERY_RESULT_SERIALIZER = "json"
+
+CELERY_RESULT_BACKEND = "django-db"
+CELERY_RESULT_EXTENDED = True
