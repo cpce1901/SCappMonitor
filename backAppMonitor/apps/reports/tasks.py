@@ -30,7 +30,7 @@ def detail_lecture(group):
         return columns[0], columns[1], columns[2]
 
 
-@shared_task(name="reporte")
+@shared_task(bind=True, soft_time_limit=600, name="reporte")
 def export_excel_task(sensor, vars, date1, date2):
 
     detail_1, detail_2, detail_3 = detail_lecture(vars)

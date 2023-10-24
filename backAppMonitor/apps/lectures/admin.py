@@ -51,8 +51,5 @@ class MeasureAdmin(ImportExportModelAdmin, ExportActionModelAdmin):
 
     located.short_description = "ubicación"
 
-    def has_export_permission(self, request):
-        return False
-
 
 admin.site.register(Measures, MeasureAdmin)
