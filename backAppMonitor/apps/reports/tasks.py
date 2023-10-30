@@ -62,6 +62,8 @@ def export_excel_task(sensor, vars, date1, date2):
         )  # Asegúrate de que 'media' sea una carpeta válida en tu proyecto
         wb.save(excel_path)
 
+        print("Casi devolviendo")
+
         return excel_path
 
     except Exception as e:
