@@ -27,14 +27,16 @@ def detail_lecture(group):
         # Obtiene las columnas correspondientes al grupo
         columns = group_to_columns.get(group, ("", "", ""))
 
+        print(columns)
+
         return columns[0], columns[1], columns[2]
 
 
-@shared_task(bind=True, soft_time_limit=600, name="reporte")
+@shared_task(bind=True, name="reporte")
 def export_excel_task(sensor, vars, date1, date2):
 
     detail_1, detail_2, detail_3 = detail_lecture(vars)
-
+    
     datos = Measures.objects.list_lectures_sensor_group_dates(sensor, vars, date1, date2)
     
     # Crea un nuevo libro de trabajo Excel

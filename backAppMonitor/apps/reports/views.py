@@ -289,7 +289,7 @@ class ExportExcel(View):
         <int:pk_place>/<int:pk_sensor>/<str:group>/<str:date1>/<str:date2>/
 
         """
-        
+
         # Dispara la tarea Celery para generar el archivo Excel
         result = export_excel_task.delay(
             sensor=sensor_id, vars=vars_group, date1=date1, date2=date2
