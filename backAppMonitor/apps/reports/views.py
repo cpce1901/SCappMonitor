@@ -280,7 +280,7 @@ class ReportFinal(LoginRequiredMixin, TemplateView):
 class ExportExcel(View):
     def get(self, request, *args, **kwargs):
         # Recuperamos las variables desde la URL
-        place_id = self.kwargs["pk_place"]
+        # place_id = self.kwargs["pk_place"]
         sensor_id = self.kwargs["pk_sensor"]
         vars_group = self.kwargs["group"]
         date1 = self.kwargs["date1"]
