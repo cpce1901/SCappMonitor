@@ -291,9 +291,7 @@ class ExportExcel(View):
         """
 
         # Dispara la tarea Celery para generar el archivo Excel
-        result = export_excel_task.delay(
-            sensor=sensor_id, vars=vars_group, date1=date1, date2=date2
-        )
+        result = export_excel_task.delay(sensor_id, vars_group, date1, date2)
 
         # Espera a que la tarea Celery termine y obtiene la ruta del archivo Excel generado
         excel_path = result.get()
