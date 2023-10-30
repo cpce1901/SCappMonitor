@@ -33,7 +33,7 @@ CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_SERIALIZER = "json"
 
 CELERY_RESULT_EXTENDED = True
-
+CELERY_RESULT_BACKEND = "django-db"
 # Correo de prueba
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"

@@ -11,6 +11,7 @@ INSTALLED_APPS = [
     # very important apps
     "rest_framework",
     'import_export',
+    'django_celery_results',
     'django.contrib.humanize',
     
     # django apps
