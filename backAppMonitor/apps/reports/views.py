@@ -279,51 +279,53 @@ class ReportFinal(LoginRequiredMixin, TemplateView):
 
 class ExportExcel(View):
     def get(self, request, *args, **kwargs):
-        # Recuperamos las variables desde la URL
-        place_id = self.kwargs["pk_place"]
-        sensor_id = self.kwargs["pk_sensor"]
-        vars_group = self.kwargs["group"]
-        date1 = self.kwargs["date1"]
-        date2 = self.kwargs["date2"]
+        try:
+            # Recuperamos las variables desde la URL
+            place_id = self.kwargs["pk_place"]
+            sensor_id = self.kwargs["pk_sensor"]
+            vars_group = self.kwargs["group"]
+            date1 = self.kwargs["date1"]
+            date2 = self.kwargs["date2"]
 
-        """
-        <int:pk_place>/<int:pk_sensor>/<str:group>/<str:date1>/<str:date2>/
+            # Dispara la tarea Celery para generar el archivo Excel
+            result = export_excel_task.delay(sensor_id, vars_group, date1, date2)
 
-        """
+            # Espera a que la tarea Celery termine
+            result.wait()
 
-        # Dispara la tarea Celery para generar el archivo Excel
-        result = export_excel_task.delay(sensor_id, vars_group, date1, date2)
+            if result.wait():
+                messages.success(
+                    self.request,
+                    f"Tareas Realizada",
+                )
+            else:
+                messages.error(
+                    self.request,
+                    f"Tarea no realizada",
+                )
+            # Espera a que la tarea Celery termine y obtiene la ruta del archivo Excel generado
+            excel_path = result.get()
 
-        # Espera a que la tarea Celery termine
-        result.wait()
+            # Abre y lee el archivo Excel
+            with open(excel_path, "rb") as excel_file:
+                response = HttpResponse(
+                    excel_file.read(),
+                    content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                )
 
-        if result.wait():
-            messages.success(
-                self.request,
-                f"Tareas Realizada",
-            )
-        else:
-            messages.error(
-                self.request,
-                f"Tarea no realizada",
-            )
-        # Espera a que la tarea Celery termine y obtiene la ruta del archivo Excel generado
-        excel_path = result.get()
+            # Configura las cabeceras para la descarga del archivo
+            response["Content-Disposition"] = f"attachment; filename=datos.xlsx"
 
-        # Abre y lee el archivo Excel
-        with open(excel_path, "rb") as excel_file:
-            response = HttpResponse(
-                excel_file.read(),
-                content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-            )
+            # Elimina el archivo temporal
+            os.remove(excel_path)
 
-        # Configura las cabeceras para la descarga del archivo
-        response["Content-Disposition"] = f"attachment; filename=datos.xlsx"
+            context = {
+                "file_name": "datos.xlsx",
+            }
 
-        # Elimina el archivo temporal
-        os.remove(excel_path)
+            return render(request, "reports/messageReport.html", context)
 
-        context = {
-            'file_name': 'datos.xlsx',
-        }
-        return render(request, 'reports/messageReport.html', context)
+        except Exception as e:
+            print(f"Error en ExportExcel: {str(e)}")
+            messages.error(self.request, "Error al generar el archivo Excel.")
+            return render(request, "reports/messageReport.html")

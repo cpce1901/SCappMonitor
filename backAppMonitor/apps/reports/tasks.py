@@ -33,33 +33,39 @@ def detail_lecture(group):
 
 @shared_task(name="reporte")
 def export_excel_task(sensor, vars, date1, date2):
+    try:
+        detail_1, detail_2, detail_3 = detail_lecture(vars)
 
-    detail_1, detail_2, detail_3 = detail_lecture(vars)
+        datos = Measures.objects.list_lectures_sensor_group_dates(
+            sensor, vars, date1, date2
+        )
 
-    datos = Measures.objects.list_lectures_sensor_group_dates(
-        sensor, vars, date1, date2
-    )
+        # Crea un nuevo libro de trabajo Excel
+        wb = Workbook()
+        ws = wb.active
 
-    # Crea un nuevo libro de trabajo Excel
-    wb = Workbook()
-    ws = wb.active
-
-    # Agrega encabezados de columna
-    ws.append(
-        ["ID", detail_1, detail_2, detail_3, "Fecha"]
-    )  # Reemplaza con tus nombres de columna
-
-    # Agrega datos a las filas
-    for dato in datos:
+        # Agrega encabezados de columna
         ws.append(
-            [dato[0], dato[1], dato[2], dato[3], dato[4]]
-        )  # Reemplaza con los nombres de tus campos
+            ["ID", detail_1, detail_2, detail_3, "Fecha"]
+        )  # Reemplaza con tus nombres de columna
 
-    # Guarda el archivo Excel
-    excel_filename = "datos.xlsx"
-    excel_path = os.path.join(
-        "media", excel_filename
-    )  # Asegúrate de que 'media' sea una carpeta válida en tu proyecto
-    wb.save(excel_path)
+        # Agrega datos a las filas
+        for dato in datos:
+            ws.append(
+                [dato[0], dato[1], dato[2], dato[3], dato[4]]
+            )  # Reemplaza con los nombres de tus campos
 
-    return excel_path
+        # Guarda el archivo Excel
+        excel_filename = "datos.xlsx"
+        excel_path = os.path.join(
+            "media", excel_filename
+        )  # Asegúrate de que 'media' sea una carpeta válida en tu proyecto
+        wb.save(excel_path)
+
+        return excel_path
+
+    except Exception as e:
+        # Manejo de excepciones
+        # Registra el error o realiza acciones de recuperación según sea necesario
+        print(f"Error en export_excel_task: {str(e)}")
+        return None
