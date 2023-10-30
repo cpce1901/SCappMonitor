@@ -290,40 +290,32 @@ class ExportExcel(View):
             # Dispara la tarea Celery para generar el archivo Excel
             result = export_excel_task.delay(sensor_id, vars_group, date1, date2)
 
-            # Espera a que la tarea Celery termine
-            result.wait()
-
-            if result.wait():
-                messages.success(
-                    self.request,
-                    f"Tareas Realizada",
-                )
-            else:
-                messages.error(
-                    self.request,
-                    f"Tarea no realizada",
-                )
             # Espera a que la tarea Celery termine y obtiene la ruta del archivo Excel generado
             excel_path = result.get()
 
-            # Abre y lee el archivo Excel
-            with open(excel_path, "rb") as excel_file:
-                response = HttpResponse(
-                    excel_file.read(),
-                    content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                )
+            if excel_path:
+                # Abre y lee el archivo Excel
+                with open(excel_path, "rb") as excel_file:
+                    response = HttpResponse(
+                        excel_file.read(),
+                        content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                    )
 
-            # Configura las cabeceras para la descarga del archivo
-            response["Content-Disposition"] = f"attachment; filename=datos.xlsx"
+                # Configura las cabeceras para la descarga del archivo
+                response["Content-Disposition"] = f"attachment; filename=datos.xlsx"
 
-            # Elimina el archivo temporal
-            os.remove(excel_path)
+                # Elimina el archivo temporal
+                os.remove(excel_path)
 
-            context = {
-                "file_name": "datos.xlsx",
-            }
+                context = {
+                    "file_name": "datos.xlsx",
+                }
 
-            return render(request, "reports/messageReport.html", context)
+                return render(request, "reports/messageReport.html", context)
+
+            else:
+                messages.error(self.request, "Error al generar el archivo Excel.")
+                return render(request, "reports/messageReport.html")
 
         except Exception as e:
             print(f"Error en ExportExcel: {str(e)}")
