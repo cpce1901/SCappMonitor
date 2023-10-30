@@ -7,7 +7,7 @@ ALLOWED_HOSTS = ['146.190.172.0', 'localhost']
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
-        "NAME": "scollegeProd",  # Nombre DB
+        "NAME": "scollegeprod",  # Nombre DB
         "USER": "cpce1901",  # Nombre usuario
         "PASSWORD": "cpce1901",  # Password
         "HOST": "localhost",
