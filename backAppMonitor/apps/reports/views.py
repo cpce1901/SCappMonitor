@@ -314,7 +314,7 @@ class ExportExcel(View):
                 return render(request, "reports/messageReport.html", context)
 
             else:
-                messages.error(self.request, "Error al generar el archivo Excel.")
+                messages.error(self.request, f"Error al generar el archivo Excel. Problemas en el {excel_path}")
                 return render(request, "reports/messageReport.html")
 
         except Exception as e:
