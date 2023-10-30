@@ -34,3 +34,11 @@ CELERY_RESULT_SERIALIZER = "json"
 
 CELERY_RESULT_BACKEND = "django-db"
 CELERY_RESULT_EXTENDED = True
+
+# Correo de prueba
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True  # Usar TLS (Transport Layer Security) para cifrar la conexión
+EMAIL_HOST_USER = "ircd.claudio@gmail.com"  # Reemplaza con tu dirección de correo electrónico de Gmail
+EMAIL_HOST_PASSWORD = "ieiy rndj stsx vine"
