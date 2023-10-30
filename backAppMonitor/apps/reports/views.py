@@ -1,4 +1,4 @@
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.http import HttpResponse
 from django.views.generic import TemplateView, FormView, View
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -13,6 +13,7 @@ import json
 import os
 from apps.lectures.models import Measures
 from apps.sensors.models import Sensor
+from django.contrib import messages
 
 
 # Create your views here.
@@ -293,6 +294,19 @@ class ExportExcel(View):
         # Dispara la tarea Celery para generar el archivo Excel
         result = export_excel_task.delay(sensor_id, vars_group, date1, date2)
 
+        # Espera a que la tarea Celery termine
+        result.wait()
+
+        if result.wait():
+            messages.success(
+                self.request,
+                f"Tareas Realizada",
+            )
+        else:
+            messages.error(
+                self.request,
+                f"Tarea no realizada",
+            )
         # Espera a que la tarea Celery termine y obtiene la ruta del archivo Excel generado
         excel_path = result.get()
 
@@ -309,4 +323,7 @@ class ExportExcel(View):
         # Elimina el archivo temporal
         os.remove(excel_path)
 
-        return response
+        context = {
+            'file_name': 'datos.xlsx',
+        }
+        return render(request, 'reports/messageReport.html', context)
