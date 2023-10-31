@@ -3,4 +3,5 @@ from .serializer import LectureSerializer
 
 class CreateLectures(CreateAPIView):
     serializer_class = LectureSerializer
+
     
