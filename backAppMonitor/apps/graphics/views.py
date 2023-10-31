@@ -32,15 +32,15 @@ class DayGraphics(LoginRequiredMixin, TemplateView):
         list_label = []
         list_data = []
 
-        if len(list_data) and len(list_label):
-            show = True
-        else:
-            show = False
-
         for a, e in query:
             list_data.append(a)
             fecha = e.strftime("%Y-%m-%d %H:%M:%S")
             list_label.append(fecha)
+
+        if len(list_data) and len(list_label):
+            show = True
+        else:
+            show = False
 
         data = {
             "data": list_data,
@@ -88,7 +88,7 @@ class DayGraphics(LoginRequiredMixin, TemplateView):
         sensor = Sensor.objects.get(id=sensor_id)
 
         datos = Measures.objects.lectures_today(sensor.number_sensor, var_name)
-
+        
         # Creamos los datos json con los datos recibidos desde db
         show, json_data = self.create_json(datos, var_name)
 

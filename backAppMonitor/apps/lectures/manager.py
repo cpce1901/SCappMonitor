@@ -2,7 +2,6 @@ from django.db.models import manager
 import datetime
 
 
-
 class MeasuresManager(manager.Manager):
     def todo(self):
         return self.all()
@@ -52,7 +51,6 @@ class MeasuresManager(manager.Manager):
         return response
 
     def list_lectures_sensor_group_detail_dates(self, sensor, detail, date1, date2):
-        
         response = (
             self.filter(
                 sensor_id=sensor,
@@ -62,7 +60,7 @@ class MeasuresManager(manager.Manager):
                 created__lt=date2,
             )
             .prefetch_related("sensor_id")
-            .values_list(detail, 'created')
+            .values_list(detail, "created")
             .order_by("created")
         )
 
@@ -70,9 +68,10 @@ class MeasuresManager(manager.Manager):
 
     def lectures_today(self, sensor, group):
 
+        # created__gte=2023-10-30+00%3A00%3A00&created__lt=2023-10-31+00%3A00%3A00
         today = datetime.datetime.now()
         date1 = today.strftime("%Y-%m-%d+00:00:00")
-        
+
         date2 = today + datetime.timedelta(days=1)
         date2 = date2.strftime("%Y-%m-%d+00:00:00")
 
@@ -84,9 +83,8 @@ class MeasuresManager(manager.Manager):
                 # __LTE nos sirve para encontrar el limite superior incluyendo ese mismo limite
                 created__lt=date2,
             )
-            .prefetch_related("sensor_id")
             .values_list(group, "created")
             .order_by("created")
         )
-        
+
         return response
