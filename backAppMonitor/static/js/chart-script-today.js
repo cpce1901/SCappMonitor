@@ -51,10 +51,6 @@ function createLineChart(context, data) {
                     text: data.data.unit
                 },
                 ticks: {
-                    // Include a dollar sign in the ticks
-                    callback: function (value, index, ticks) {
-                        return value;
-                    },
                 },
             },
         },
