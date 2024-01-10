@@ -99,3 +99,5 @@ def review_lecture_for_alert(sender, instance, **kargs):
             pass
 
     return None
+
+
