@@ -1,9 +1,8 @@
 // Función para crear el gráfico de líneas
 function createLineChart(context, data) {
-
     const labels = data.data.labels;
     const datasetData = data.data.data;
-
+    console.log(datasetData)
 
     const chartData = {
         labels: labels,
