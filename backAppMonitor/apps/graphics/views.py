@@ -33,7 +33,7 @@ class DayGraphics(LoginRequiredMixin, TemplateView):
         list_data = []
 
         for a, e in query:
-            list_data.append(a)
+            list_data.append(str(round(a,2)))
             fecha = e.strftime("%Y-%m-%d %H:%M:%S")
             list_label.append(fecha)
 
@@ -50,6 +50,8 @@ class DayGraphics(LoginRequiredMixin, TemplateView):
         }
 
         json_response = json.dumps(data)
+
+        print(json_response)
 
         return show, json_response
 
@@ -91,6 +93,8 @@ class DayGraphics(LoginRequiredMixin, TemplateView):
         
         # Creamos los datos json con los datos recibidos desde db
         show, json_data = self.create_json(datos, var_name)
+
+        
 
         place = Located.objects.get(id=place_id)
         context["show"] = show
