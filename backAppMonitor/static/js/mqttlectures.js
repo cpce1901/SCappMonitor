@@ -1,12 +1,12 @@
 const Mqtt = (data) => {
   const { server, port, user, pass, base, ubicacion, sensor } = data[0];
 
-  var clientId = "ws" + Math.random();
+  var clientId = "wss" + Math.random();
   var username = user;
   var password = pass;
 
   const direction = base + "/" + ubicacion + "/" + sensor;
-  console.log(port)
+  console.log(port, server)
   // Create a client instance
   var client = new Paho.MQTT.Client(server, port, clientId);
 
