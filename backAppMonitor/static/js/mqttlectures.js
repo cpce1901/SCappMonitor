@@ -6,9 +6,10 @@ const Mqtt = (data) => {
   var password = pass;
 
   const direction = base + "/" + ubicacion + "/" + sensor;
+  const url_server = server + ':' + port;
   console.log(port, server)
   // Create a client instance
-  var client = new Paho.MQTT.Client(server, port, clientId);
+  var client = new Paho.MQTT.Client(server, clientId);
 
   // set callback handlers
   client.onConnectionLost = onConnectionLost;
