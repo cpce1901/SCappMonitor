@@ -5,7 +5,7 @@ const Mqtt = (data) => {
   var username = user;
   var password = pass;
 
-  const direction = "wss://" + base + "/" + ubicacion + "/" + sensor;
+  const direction = base + "/" + ubicacion + "/" + sensor;
   console.log(port, server)
   // Create a client instance
   var client = new Paho.MQTT.Client(server, port, clientId);
