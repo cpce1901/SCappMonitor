@@ -9,7 +9,9 @@ const Mqtt = (data) => {
   const url_server = server + ':' + port;
   console.log(url_server);
   // Create a client instance
-  var client = new Paho.MQTT.Client(server, clientId);
+  var client = new Paho.MQTT.Client(server, clientId, {
+    trustStore: trustStore,
+  });
 
   // set callback handlers
   client.onConnectionLost = onConnectionLost;
