@@ -2,13 +2,13 @@ from .base import *
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
         "NAME": "scollegetest",  # Nombre DB
-        "USER": "cpce1901",  # Nombre usuario
+        "USER": "root",  # Nombre usuario
         "PASSWORD": "cpce1901",  # Password
         "HOST": "localhost",
         "PORT": "3306",
