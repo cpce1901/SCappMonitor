@@ -1,5 +1,8 @@
 const Mqtt = (data) => {
   const { server, port, user, pass, base, ubicacion, sensor } = data[0];
+  const options = {
+    // other options as before
+  }
 
   var clientId = "wss" + Math.random();
   var username = user;
@@ -8,7 +11,8 @@ const Mqtt = (data) => {
   const direction = base + "/" + ubicacion + "/" + sensor;
 
   // Create a client instance
-  var client = new Paho.MQTT.Client(("ws://" + server + ":" + port + "/mqtt"), clientId);
+  var client = new Paho.MQTT.Client(("wss://" + server + ":" + port + "/mqtt"), clientId);
+
 
   // set callback handlers
   client.onConnectionLost = onConnectionLost;
@@ -19,6 +23,7 @@ const Mqtt = (data) => {
     onSuccess: onConnect,
     userName: username,
     password: password,
+    useSSL: true,
 
   });
 
