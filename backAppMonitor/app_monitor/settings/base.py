@@ -93,8 +93,8 @@ USE_TZ = False
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-BROKER_MQTT = "wss://146.190.124.66"
-PORT = 8883
+BROKER_MQTT = "146.190.124.66"
+PORT = 8083
 CLIENTE = "SCollege"
 USER = "SCollege"
 PASS = "cpce1901"
