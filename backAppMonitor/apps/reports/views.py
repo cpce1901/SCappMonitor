@@ -78,6 +78,19 @@ class ReportFormDetail(LoginRequiredMixin, FormView):
             date1 = date1.strftime("%Y-%m-%d")
             date2 = date2.strftime("%Y-%m-%d")
 
+            """
+
+            "volts-mono"
+            "volts-linea"
+            "amps"
+            "watts"
+            "kwh"
+            "fp"
+            "hz"
+            "error"
+
+            """
+
             # Validamos los datos para convertir a string y enviarlos a la siguinte vista
             if grupo == 1:
                 grupo_envio = "volts-mono"
@@ -88,7 +101,11 @@ class ReportFormDetail(LoginRequiredMixin, FormView):
             elif grupo == 4:
                 grupo_envio = "watts"
             elif grupo == 5:
-                grupo_envio = "others"
+                grupo_envio = "kwh"
+            elif grupo == 6:
+                grupo_envio = "fp"
+            elif grupo == 7:
+                grupo_envio = "hz"
             else:
                 grupo_envio = "error"
 
@@ -169,7 +186,9 @@ class ReportFinal(LoginRequiredMixin, TemplateView):
         "volts-linea"
         "amps"
         "watts"
-        "others"
+        "kwh"
+        "fp"
+        "hz"
         "error"
 
         """
@@ -180,13 +199,19 @@ class ReportFinal(LoginRequiredMixin, TemplateView):
             "volts-linea": ("v12", "v23", "v13"),
             "amps": ("i1", "i2", "i3"),
             "watts": ("p1", "p2", "p3"),
-            "others": ("pa", "fp", "hz"),
+            "kwh": ("pa"),
+            "fp": ("fp"),
+            "hz": ("hz"),
         }
 
         # Obtiene las columnas correspondientes al grupo
-        columns = group_to_columns.get(group, ("", "", ""))
+        if "kwh" in group or "fp" in group or "hz" in group:
+            columns = group_to_columns.get(group, (""))
+            return columns
+        else:
+            columns = group_to_columns.get(group, ("", "", ""))
+            return columns[0], columns[1], columns[2]
 
-        return columns[0], columns[1], columns[2]
 
     def get_context_data(self, **kwargs):
         context = super(ReportFinal, self).get_context_data(**kwargs)
@@ -221,39 +246,63 @@ class ReportFinal(LoginRequiredMixin, TemplateView):
         date2 = datetime.datetime.strptime(date2, "%Y-%m-%d")
         date2 = date2.strftime("%Y-%m-%d+00:00:00")
 
-        # Conseguimos los detalles desde la consulta que nos interesa
-        detail_1, detail_2, detail_3 = self.detail_lecture(vars_group)
+        # Restrinjir flujo si solo es una variable
+        if "kwh" in vars_group or "fp" in vars_group or "hz" in vars_group:
+            detail_1= self.detail_lecture(vars_group)
 
-        # Realizamos la consulta a db
-        datos1 = Measures.objects.list_lectures_sensor_group_detail_dates(
+            # Realizamos la consulta a db
+            datos1 = Measures.objects.list_lectures_sensor_group_detail_dates(
             sensor_id, detail_1, date1, date2
-        )
-        datos2 = Measures.objects.list_lectures_sensor_group_detail_dates(
-            sensor_id, detail_2, date1, date2
-        )
-        datos3 = Measures.objects.list_lectures_sensor_group_detail_dates(
-            sensor_id, detail_3, date1, date2
-        )
+            )
 
-        try:
-            # Creamos los datos json con los datos recibidos desde db
-            json1 = self.create_json(datos1, detail_1)
-            json2 = self.create_json(datos2, detail_2)
-            json3 = self.create_json(datos3, detail_3)
+            try:
+                # Creamos los datos json con los datos recibidos desde db
+                json1 = self.create_json(datos1, detail_1)
+                json2 = {}
+                json3 = {}
+                analitic_1 = self.analitic_values(datos1, detail_1)
 
-            analitic_1 = self.analitic_values(datos1, detail_1)
-            analitic_2 = self.analitic_values(datos2, detail_2)
-            analitic_3 = self.analitic_values(datos3, detail_3)
+                # Envio de analitica
+                context["json_analitics_1"] = analitic_1
+    
+                # Variable para mostrar data
+                show = True
+            except:
+                show = False
 
-            # Envio de analitica
-            context["json_analitics_1"] = analitic_1
-            context["json_analitics_2"] = analitic_2
-            context["json_analitics_3"] = analitic_3
-            # Variable para mostrar data
-            show = True
+        else:
+            detail_1, detail_2, detail_3 = self.detail_lecture(vars_group)
 
-        except:
-            show = False
+            # Realizamos la consulta a db
+            datos1 = Measures.objects.list_lectures_sensor_group_detail_dates(
+                sensor_id, detail_1, date1, date2
+            )
+            datos2 = Measures.objects.list_lectures_sensor_group_detail_dates(
+                sensor_id, detail_2, date1, date2
+            )
+            datos3 = Measures.objects.list_lectures_sensor_group_detail_dates(
+                sensor_id, detail_3, date1, date2
+            )
+
+            try:
+                # Creamos los datos json con los datos recibidos desde db
+                json1 = self.create_json(datos1, detail_1)
+                json2 = self.create_json(datos2, detail_2)
+                json3 = self.create_json(datos3, detail_3)
+
+                analitic_1 = self.analitic_values(datos1, detail_1)
+                analitic_2 = self.analitic_values(datos2, detail_2)
+                analitic_3 = self.analitic_values(datos3, detail_3)
+
+                # Envio de analitica
+                context["json_analitics_1"] = analitic_1
+                context["json_analitics_2"] = analitic_2
+                context["json_analitics_3"] = analitic_3
+                # Variable para mostrar data
+                show = True
+
+            except:
+                show = False
 
         # Transformamos datos de fechas en un datetime object
         date1 = datetime.datetime.strptime(date1, "%Y-%m-%d+00:00:00")
