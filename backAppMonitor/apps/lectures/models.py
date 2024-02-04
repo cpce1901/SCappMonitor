@@ -26,7 +26,7 @@ class Measures(models.Model):
     fp = models.FloatField('FP', db_index=True)
     hz = models.FloatField('Hz', db_index=True)
 
-    created = models.DateTimeField('Fecha de creación', auto_now_add= True, db_index=True)
+    created = models.DateTimeField('Fecha de creación', auto_now_add= not settings.DEBUG, db_index=True)
     #created = models.DateTimeField('Fecha de creación', db_index=True)
 
     objects = MeasuresManager()

@@ -1,52 +1,55 @@
-// Función para crear el gráfico de líneas
 function createLineChart(context, data) {
-
-
     const { data1, data2, data3 } = data;
-
-
 
     const datasetData = {
         labels: data1.labels,
-        datasets: [
-            {
-                label: data1.name,  // Deberías usar data.data.name en lugar de labels
-                data: data1.data,
-                borderWidth: 1.2,
-                fill: false,
-                tension: 0,
-                pointRadius: 0,
-                pointHoverRadius: 7,
-                borderColor: "rgba(0, 129, 255, 1)",
-                backgroundColor: "rgba(0, 129, 255, 0.2)",
-
-            },
-            {
-                label: data2.name,  // Deberías usar data.data.name en lugar de labels
-                data: data2.data,
-                borderWidth: 1.2,
-                fill: false,
-                tension: 0,
-                pointRadius: 0,
-                pointHoverRadius: 7,
-                borderColor: "rgba(255, 99, 132, 1)",
-                backgroundColor: "rgba(255, 99, 132, 0.2)",
-            },
-            {
-                label: data3.name,  // Deberías usar data.data.name en lugar de labels
-                data: data3.data,
-                borderWidth: 1.2,
-                fill: false,
-                tension: 0,
-                pointRadius: 0,
-                pointHoverRadius: 7,
-                borderColor: "rgba(254, 192, 1, 1)",
-                backgroundColor: "rgba(254, 192, 1, 0.2)",
-            },
-
-        ],
+        datasets: []
     };
 
+    if (data1 && data1.data) {
+        const dataset1 = {
+            label: data1.name,
+            data: data1.data,
+            borderWidth: 1.2,
+            fill: false,
+            tension: 0,
+            pointRadius: 0,
+            pointHoverRadius: 7,
+            borderColor: "rgba(0, 129, 255, 1)",
+            backgroundColor: "rgba(0, 129, 255, 0.2)",
+        };
+        datasetData.datasets.push(dataset1);
+    }
+
+    if (data2 && data2.data) {
+        const dataset2 = {
+            label: data2.name,
+            data: data2.data,
+            borderWidth: 1.2,
+            fill: false,
+            tension: 0,
+            pointRadius: 0,
+            pointHoverRadius: 7,
+            borderColor: "rgba(255, 99, 132, 1)",
+            backgroundColor: "rgba(255, 99, 132, 0.2)",
+        };
+        datasetData.datasets.push(dataset2);
+    }
+
+    if (data3 && data3.data) {
+        const dataset3 = {
+            label: data3.name,
+            data: data3.data,
+            borderWidth: 1.2,
+            fill: false,
+            tension: 0,
+            pointRadius: 0,
+            pointHoverRadius: 7,
+            borderColor: "rgba(254, 192, 1, 1)",
+            backgroundColor: "rgba(254, 192, 1, 0.2)",
+        };
+        datasetData.datasets.push(dataset3);
+    }
 
     const chartConfig = {
         responsive: true,
@@ -71,12 +74,10 @@ function createLineChart(context, data) {
             },
             y: {
                 beginAtZero: false,
-                ticks: {
-                },
+                ticks: {},
             },
         },
     };
-
 
     new Chart(context, {
         type: "line",
@@ -84,6 +85,7 @@ function createLineChart(context, data) {
         options: chartConfig,
     });
 }
+
 
 // Función para cargar los datos del gráfico
 function loadChartData() {
@@ -104,5 +106,6 @@ window.onload = function () {
 
     // Crear el gráfico con los datos cargados
     createLineChart(ctx0, chartData);
+
 
 };

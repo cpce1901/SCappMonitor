@@ -66,11 +66,15 @@
                             </canvas>
                         </div>
 
+
+
                         <!-- Analitica -->
-                        <div class="container d-flex flex-column">
+                        <div 
+                        class="container d-flex {% if json_analitics_1 and json_analitics_2 and json_analitics_3 %} flex-column {% else %} justify-content-md-around gap-3 {% endif %} ">
 
                             <!-- Maximos -->
                             <div class="d-flex flex-column flex-md-row justify-content-md-around gap-3 mb-5">
+                                {% if  json_analitics_1 %}
                                 <!-- Maximo 1 -->
                                 <div class="rounded shadow-lg p-3 mb-3 d-flex">
                                     <div class="d-flex flex-column align-items-center justify-content-center px-5">
@@ -85,6 +89,10 @@
                                         <p class="text-danger">{{json_analitics_1.max.1|date:"H:i" }}</p>
                                     </div>
                                 </div>
+
+                                {% endif %}
+
+                                {% if  json_analitics_2 %}
 
                                 <!-- Maximo 2 -->
                                 <div class="rounded shadow-lg p-3 mb-3 d-flex">
@@ -101,6 +109,10 @@
                                     </div>
                                 </div>
 
+                                {% endif %}
+
+                                {% if  json_analitics_3 %}
+
                                 <!-- Maximo 3 -->
                                 <div class="rounded shadow-lg p-3 mb-3 d-flex">
                                     <div class="d-flex flex-column align-items-center justify-content-center px-5">
@@ -115,10 +127,16 @@
                                         <p class="text-danger">{{json_analitics_3.max.1|date:"H:i" }}</p>
                                     </div>
                                 </div>
+
+                                {% endif %}
+
                             </div>
 
                             <!-- Minimos -->
                             <div class="d-flex flex-column flex-md-row justify-content-md-around gap-3 mb-5">
+
+                                {% if  json_analitics_1 %}
+
                                 <!-- Minimo 1 -->
                                 <div class="rounded shadow-lg p-3 mb-3 d-flex">
                                     <div class="d-flex flex-column align-items-center justify-content-center px-5">
@@ -133,6 +151,10 @@
                                             {{json_analitics_1.min.1|date:"H:i" }}</p>
                                     </div>
                                 </div>
+
+                                {% endif %}
+
+                                {% if  json_analitics_2 %}
 
                                 <!-- Minimo 2 -->
                                 <div class="rounded shadow-lg p-3 mb-3 d-flex">
@@ -149,6 +171,10 @@
                                     </div>
                                 </div>
 
+                                {% endif %}
+
+                                {% if  json_analitics_3 %}
+
                                 <!-- Minimo 3 -->
                                 <div class="rounded shadow-lg p-3 mb-3 d-flex">
                                     <div class="d-flex flex-column align-items-center justify-content-center px-5">
@@ -163,10 +189,18 @@
                                             {{json_analitics_3.min.1|date:"H:i" }}</p>
                                     </div>
                                 </div>
+
+                                {% endif %}
+
                             </div>
+
+                            
 
                             <!-- Promedios -->
                             <div class="d-flex flex-column flex-md-row justify-content-md-around gap-3 mb-5">
+
+                                {% if  json_analitics_1 %}
+
                                 <!-- Promedio 1 -->
                                 <div class="rounded shadow-lg p-3 mb-3 d-flex">
                                     <div class="d-flex flex-column align-items-center justify-content-center px-5">
@@ -184,6 +218,10 @@
                                         </p>
                                     </div>
                                 </div>
+
+                                {% endif %}
+
+                                {% if  json_analitics_2 %}
 
                                 <!-- Promedio 2 -->
                                 <div class="rounded shadow-lg p-3 mb-3 d-flex">
@@ -203,6 +241,10 @@
                                     </div>
                                 </div>
 
+                                {% if  json_analitics_3 %}
+
+                                {% endif %}
+
                                 <!-- Promedio 3 -->
                                 <div class="rounded shadow-lg p-3 mb-3 d-flex">
                                     <div class="d-flex flex-column align-items-center justify-content-center px-5">
@@ -220,6 +262,8 @@
                                         </p>
                                     </div>
                                 </div>
+
+                                {% endif %}
                             </div>
 
 
@@ -246,7 +290,8 @@
 
                                     </h5>
                                     <h5>
-                                        Si esta seguro de la existencia de sensores y registros porfavor comuniquese con su
+                                        Si esta seguro de la existencia de sensores y registros porfavor comuniquese con
+                                        su
                                         administrador de sistema.
                                     </h5>
                                 </div>
