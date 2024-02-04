@@ -9,7 +9,9 @@ class GrupoForm(forms.Form):
             ("2", "Voltajes linea"),
             ("3", "Corrientes"),
             ("4", "Potencias"),
-            ("5", "Otros"),
+            ("5", "Energía"),
+            ("6", "Factor de potencia"),
+            ("7", "Frecuencia"),
         ]
 
         self.fields["grupo"] = forms.ChoiceField(
