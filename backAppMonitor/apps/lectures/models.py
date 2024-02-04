@@ -1,6 +1,7 @@
 from django.db import models
 from apps.sensors.models import Sensor
 from .manager import MeasuresManager
+from django.conf import settings
 
 # Create your models here.
 class Measures(models.Model):
@@ -25,7 +26,7 @@ class Measures(models.Model):
     fp = models.FloatField('FP', db_index=True)
     hz = models.FloatField('Hz', db_index=True)
 
-    created = models.DateTimeField('Fecha de creación', auto_now_add=True, db_index=True)
+    created = models.DateTimeField('Fecha de creación', auto_now_add= False, db_index=True)
     #created = models.DateTimeField('Fecha de creación', db_index=True)
 
     objects = MeasuresManager()

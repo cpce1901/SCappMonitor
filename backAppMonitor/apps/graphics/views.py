@@ -94,7 +94,6 @@ class DayGraphics(LoginRequiredMixin, TemplateView):
         # Creamos los datos json con los datos recibidos desde db
         show, json_data = self.create_json(datos, var_name)
 
-        
 
         place = Located.objects.get(id=place_id)
         context["show"] = show
@@ -103,4 +102,35 @@ class DayGraphics(LoginRequiredMixin, TemplateView):
         context["today"] = json_data
         context["var"] = (var, text)
         context["date"] = date
+        return context
+
+
+class EnergyGraphic(LoginRequiredMixin, TemplateView):
+    template_name = "graphics/energygraphics.html"
+    login_url = reverse_lazy("users_app:login")
+
+   
+    def get_context_data(self, **kwargs):      
+        time_list = [] 
+
+        context = super().get_context_data(**kwargs)
+        date = datetime.date.today()
+        place_id = self.kwargs["pk_place"]
+        sensor_id = self.kwargs["pk_sensor"]
+        interval = self.kwargs["interval"]
+
+        """
+        intervals:
+        1 - hours
+        2 - days
+        3 - mouths
+        4 - years
+
+        """
+
+        datos = Measures.objects.lectures_energy_today_by_interval_in_hours(1)
+        #datos = Measures.objects.lectures_energy_date_range_by_interval(1, start_date, end_date, 'hour')
+        
+        context["response"] = datos
+        
         return context

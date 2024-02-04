@@ -1,4 +1,5 @@
-from django.db.models import manager
+from django.db.models import manager, Sum, F, Max, Min, ExpressionWrapper, fields
+from django.db.models.functions import TruncMinute, TruncHour, TruncDay, TruncMonth
 import datetime
 
 
@@ -88,3 +89,61 @@ class MeasuresManager(manager.Manager):
         )
 
         return response
+    
+
+    def lectures_energy_today_by_interval_in_hours(self, sensor):
+        today = datetime.datetime.now()
+        date1 = today.replace(hour=0, minute=0, second=0, microsecond=0)
+        date2 = date1 + datetime.timedelta(days=1)
+
+        queryset = (
+        self
+        .filter(sensor_id=sensor, created__gte=date1, created__lt=date2)
+        .annotate(interval=TruncHour('created'))
+        .values('interval')
+        .annotate(min_pa=Min('pa'))
+        .order_by('interval')
+    )
+
+        results = list(queryset)
+        for i in range(1, len(results)):
+            results[i]['pa_difference'] = results[i]['min_pa'] - results[i-1]['min_pa']
+
+         # Ajuste para el primer registro
+        if results:
+            results[0]['pa_difference'] = 0
+
+        return results
+    
+
+    def lectures_energy_date_range_by_interval(self, sensor, date1, date2, interval):
+
+        
+        if interval == 'hour':
+            interval_expression = TruncHour('created')
+        elif interval == 'day':
+            interval_expression = TruncDay('created')
+        elif interval == 'month':
+            interval_expression = TruncMonth('created')
+        else:
+            raise ValueError("No existe intervalo valido...")
+        
+        queryset = (
+        self
+        .filter(sensor_id=sensor, created__gte=date1, created__lt=date2)
+        .annotate(interval=interval_expression)
+        .values('interval')
+        .annotate(min_pa=Min('pa'))
+        .order_by('interval')
+        )
+
+        results = list(queryset)
+        for i in range(1, len(results)):
+            results[i]['pa_difference'] = results[i]['min_pa'] - results[i-1]['min_pa']
+
+         # Ajuste para el primer registro
+        if results:
+            results[0]['pa_difference'] = 0
+
+        return results
+

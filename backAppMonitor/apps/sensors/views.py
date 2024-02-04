@@ -60,8 +60,6 @@ class DetailMeasures(LoginRequiredMixin, TemplateView):
             
         )
 
-        print(base, locate, sensor)
-
         return json.dumps(data)
 
     def get_context_data(self, **kwargs):

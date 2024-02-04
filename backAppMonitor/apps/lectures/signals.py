@@ -1,4 +1,4 @@
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, pre_save
 from .models import Measures
 from django.dispatch import receiver
 from apps.sensors.models import Sensor
@@ -101,3 +101,8 @@ def review_lecture_for_alert(sender, instance, **kargs):
     return None
 
 
+# Revida datos desde el sensor que ha llegado
+@receiver(pre_save, sender=Measures)
+def review_lecture_for_alert(sender, instance, **kargs):
+    instance.pa =instance.pa / 1000
+    return instance
