@@ -104,5 +104,6 @@ def review_lecture_for_alert(sender, instance, **kargs):
 # Revida datos desde el sensor que ha llegado
 @receiver(pre_save, sender=Measures)
 def review_lecture_for_alert(sender, instance, **kargs):
-    instance.pa =instance.pa / 1000
+    pa = instance.pa / 1000
+    instance.pa = round(pa, 2)
     return instance
