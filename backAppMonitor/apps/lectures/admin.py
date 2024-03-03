@@ -46,6 +46,8 @@ class MeasureAdmin(ImportExportModelAdmin, ExportActionModelAdmin):
         "sensor__located_sensor",
     )
 
+    list_per_page = 20 
+
     def located(self, obj):
         return obj.sensor.located_sensor
 

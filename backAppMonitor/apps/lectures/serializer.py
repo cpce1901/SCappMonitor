@@ -6,14 +6,16 @@ class LectureSerializer(ModelSerializer):
         model = Measures
         fields = '__all__'
 
+    
     def validate(self, data):
         for i in data:
-            if i == "pa" or i == "sensor":
+            
+            if i == "created" or i == "sensor":
                 pass
             else:
                 if data[i] > 1500:
                     raise ValidationError(f"Valores en {i}: {data[i]} mayores a 1000...") 
-    
+                
         return data
         
 
