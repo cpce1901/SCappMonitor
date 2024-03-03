@@ -10,7 +10,7 @@ class LectureSerializer(ModelSerializer):
     def validate(self, data):
         for i in data:
             
-            if i == "created" or i == "sensor":
+            if i == "created" or i == "sensor" or "pa":
                 pass
             else:
                 if data[i] > 1500:
