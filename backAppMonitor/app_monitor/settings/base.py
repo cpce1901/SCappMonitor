@@ -11,6 +11,7 @@ INSTALLED_APPS = [
     # very important apps
     "rest_framework",
     'import_export',
+    'django_celery_results',
     'django.contrib.humanize',
     
     # django apps
@@ -89,7 +90,6 @@ USE_I18N = True
 
 USE_TZ = False
 
-
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 BROKER_MQTT = "146.190.124.66"
@@ -107,9 +107,7 @@ CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
 
 CELERY_ACCEPT_CONTENT = ["json"]
 CELERY_TASK_SERIALIZER = "json"
-CELERY_RESULT_SERIALIZER = "json"
-
-CELERY_RESULT_EXTENDED = True
+CELERY_RESULT_BACKEND = 'django-db'
 
 
 

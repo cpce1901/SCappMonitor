@@ -145,10 +145,10 @@ class ReportFinal(LoginRequiredMixin, TemplateView):
             name = "Kw/h"
             var_name = "Energía"
 
-        max_value = max(query)
-        min_value = min(query)
-        avantage_value = sum([i[0] for i in query]) / len(query)
-        vantage_range_date = (query[0][1], query[len(query) - 1][1])
+        max_value = max([(i[1], i[2]) for i in query])
+        min_value = min([(i[1], i[2]) for i in query])
+        avantage_value = sum([i[1] for i in query]) / len(query)
+        vantage_range_date = (query[1][2], query[len(query) - 1][2])
 
         data = {
             "max": max_value,
@@ -157,7 +157,7 @@ class ReportFinal(LoginRequiredMixin, TemplateView):
             "dates_avantage": vantage_range_date,
             "var_name": name,
             "var": var_name,
-        }
+        } 
 
         return data
 
@@ -192,9 +192,9 @@ class ReportFinal(LoginRequiredMixin, TemplateView):
             unit = "kw/h"
             name_var = "Energía"
 
-        for a, e in query:
-            list_data.append(a)
-            fecha = e.strftime("%Y-%m-%d %H:%M:%S")
+        for a, e, i in query:
+            list_data.append(e)
+            fecha = i.strftime("%Y-%m-%d %H:%M:%S")
             list_label.append(fecha)
 
         data = {
@@ -279,18 +279,18 @@ class ReportFinal(LoginRequiredMixin, TemplateView):
         # Restrinjir flujo si solo es una variable
         if "kwh" in vars_group or "fp" in vars_group or "hz" in vars_group:
             detail_1= self.detail_lecture(vars_group)
-
+            
             # Realizamos la consulta a db
-            datos1 = Measures.objects.list_lectures_sensor_group_detail_dates(
+            dato = Measures.objects.list_lectures_sensor_group_detail_dates(
             sensor_id, detail_1, date1, date2
             )
 
             try:
                 # Creamos los datos json con los datos recibidos desde db
-                json1 = self.create_json(datos1, detail_1)
+                json1 = self.create_json(dato, detail_1)
                 json2 = {}
                 json3 = {}
-                analitic_1 = self.analitic_values(datos1, detail_1)
+                analitic_1 = self.analitic_values(dato, detail_1)
 
                 # Envio de analitica
                 context["json_analitics_1"] = analitic_1
@@ -369,7 +369,7 @@ class ExportExcel(View):
         <int:pk_place>/<int:pk_sensor>/<str:group>/<str:date1>/<str:date2>/
 
         """
-
+        print(vars_group)
         # Dispara la tarea Celery para generar el archivo Excel
         result = export_excel_task.delay(sensor_id, vars_group, date1, date2)
 

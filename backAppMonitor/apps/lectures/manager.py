@@ -61,7 +61,8 @@ class MeasuresManager(manager.Manager):
                 created__lt=date2,
             )
             .prefetch_related("sensor_id")
-            .values_list(detail, "created")
+
+            .values_list('id', detail, "created")
             .order_by("created")
         )
 
