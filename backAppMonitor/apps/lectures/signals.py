@@ -105,5 +105,5 @@ def review_lecture_for_alert(sender, instance, **kargs):
 @receiver(pre_save, sender=Measures)
 def review_lecture_for_alert(sender, instance, **kargs):
     pa = (instance.p1 + instance.p2 + instance.p3) * instance.fp
-    instance.pa = round(pa, 2)
+    instance.pa = abs(round(pa, 2))
     return instance
