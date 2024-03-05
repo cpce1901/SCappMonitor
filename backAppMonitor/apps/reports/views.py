@@ -134,13 +134,16 @@ class ReportFinal(LoginRequiredMixin, TemplateView):
     # Genera analitica max - min - advantage
     def analitic_values(self, query, var_name):
         name = ""
-
+        
         if "v" in var_name.lower():
             name = "V"
         elif "i" in var_name.lower():
             name = "A"
-        elif var_name.lower() == "p" or var_name.lower() == "pa":
+        elif var_name.lower() == "p":
             name = "Kw"
+        elif var_name.lower() == "pa":
+            name = "Kw/h"
+            var_name = "Energía"
 
         max_value = max(query)
         min_value = min(query)
@@ -163,6 +166,32 @@ class ReportFinal(LoginRequiredMixin, TemplateView):
         list_label = []
         list_data = []
 
+        name_var = ""
+        if name in ["v1", "v2", "v3"]:
+            unit = "V"
+            name_var = "Tensión de fase"
+        elif name in ["v13", "v12", "v23"]:
+            unit = "V"
+            name_var = "Tensión de línea"
+        elif name in ["i1", "i2", "i3"]:
+            unit = "A"
+            name_var = "Corriente de fase"
+        elif name in ["p1", "p2", "p3"]:
+            unit = "Kw"
+            name_var = "Potencia de fase"
+        elif name == "ea":
+            unit = "Kw/h"
+            name_var = "Energía activa"
+        elif name == "fp":
+            unit = ""
+            name_var = "Factor de potencia"
+        elif name == "hz":
+            unit = "Hz"
+            name_var = "Frecuencia"
+        elif name == "pa":
+            unit = "kw/h"
+            name_var = "Energía"
+
         for a, e in query:
             list_data.append(a)
             fecha = e.strftime("%Y-%m-%d %H:%M:%S")
@@ -171,7 +200,8 @@ class ReportFinal(LoginRequiredMixin, TemplateView):
         data = {
             "data": list_data,
             "labels": list_label,
-            "name": name,
+            "name": name_var,
+            "unit": unit,
         }
 
         json_response = json.dumps(data)

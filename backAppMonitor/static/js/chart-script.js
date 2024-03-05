@@ -74,6 +74,10 @@ function createLineChart(context, data) {
             },
             y: {
                 beginAtZero: false,
+                title:{
+                    display: true,
+                    text: data1.unit
+                },
                 ticks: {},
             },
         },
