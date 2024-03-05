@@ -11,7 +11,6 @@ INSTALLED_APPS = [
     # very important apps
     "rest_framework",
     'import_export',
-    'django_celery_results',
     'django.contrib.humanize',
     
     # django apps
@@ -101,6 +100,16 @@ PASS = "cpce1901"
 
 IMPORT_EXPORT_USE_TRANSACTIONS = True
 IMPORT_EXPORT_FORMATS = [JSON, CSV, XLSX]
+
+# Celery settings
+CELERY_BROKER_URL = "redis://localhost:6379/0"
+CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
+
+CELERY_ACCEPT_CONTENT = ["json"]
+CELERY_TASK_SERIALIZER = "json"
+CELERY_RESULT_SERIALIZER = "json"
+
+CELERY_RESULT_EXTENDED = True
 
 
 

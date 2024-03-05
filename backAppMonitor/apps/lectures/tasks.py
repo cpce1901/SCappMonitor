@@ -14,3 +14,5 @@ def send_email_alert(msg):
     send_mail(subject, message, from_email, recipient_list)
 
     return "send email"
+
+

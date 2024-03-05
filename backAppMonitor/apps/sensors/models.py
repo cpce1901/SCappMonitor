@@ -57,7 +57,8 @@ class Located(models.Model):
         verbose_name_plural = "Ubicaciones"
 
     def __str__(self):
-        return f"{self.place}"
+        return f"{self.place}"  
+
 
 
 class Sensor(models.Model):
@@ -86,3 +87,15 @@ class Sensor(models.Model):
 
     def __str__(self):
         return f"{self.id}"
+
+
+class StateSensors(models.Model):
+    sensor = models.OneToOneField(Sensor, on_delete=models.CASCADE, verbose_name="Sensor", related_name="sensor")
+    state = models.BooleanField()
+
+    class Meta:
+        verbose_name = "Estado"
+        verbose_name_plural = "Estados"
+
+    def __str__(self):
+        return f"{self.state}"

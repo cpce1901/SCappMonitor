@@ -36,6 +36,9 @@ class DayGraphics(LoginRequiredMixin, TemplateView):
         elif name == "hz":
             unit = "Hz"
             name_var = "Frecuencia"
+        elif name == "pa":
+            unit = "pa"
+            name_var = "Energía"
 
         list_label = []
         list_data = []
@@ -104,12 +107,8 @@ class DayGraphics(LoginRequiredMixin, TemplateView):
 
         sensor = Sensor.objects.get(id=sensor_id)
         place = Located.objects.get(id=place_id)
-        if var_name != "pa":
-            datos = Measures.objects.lectures_today(sensor.number_sensor, var_name)
-        else:
-            datos = Measures.objects.lectures_energy_today_by_interval_in_hours(1)
-            var_name = "ea"
-
+    
+        datos = Measures.objects.lectures_today(sensor.number_sensor, var_name)
 
         # Creamos los datos json con los datos recibidos desde db
         show, json_data = self.create_json(datos, var_name)

@@ -1,8 +1,40 @@
 from django.contrib import admin
-from django.contrib.admin.filters import DateFieldListFilter
+from django.contrib.admin.filters import DateFieldListFilter, SimpleListFilter
+from django.utils.translation import gettext_lazy as _
 from .models import Measures
 from import_export.resources import ModelResource
 from import_export.admin import ExportActionModelAdmin, ImportExportModelAdmin
+
+class InputFilter(SimpleListFilter):
+    template = 'filters/more_than.html'
+
+    def lookups(self, request, model_admin):
+        return ((),)
+    
+    def choices(self, changelist):
+        all_choice = next(super().choices(changelist))
+        all_choice['query_parts'] = (
+            (k, v)
+            for k, v in changelist.get_filters_params().items()
+            if k != self.parameter_name
+        )
+        yield all_choice
+
+
+class MoreThan(InputFilter):
+    parameter_name = 'pa'
+    title = _('Mayor que')
+
+    def queryset(self, request, queryset):
+        value = self.value()
+        if value is not None and value.strip():  # Verifica si el valor no está vacío
+            try:
+                pa = float(value)
+                return queryset.filter(pa__gte=pa)
+            except ValueError:
+                pass  # Handle the case where the value is not a valid float
+
+        return queryset
 
 
 class MeasureResource(ModelResource):
@@ -44,6 +76,7 @@ class MeasureAdmin(ImportExportModelAdmin, ExportActionModelAdmin):
         ("created", DateFieldListFilter),
         "sensor__id",
         "sensor__located_sensor",
+        MoreThan
     )
 
     list_per_page = 20 

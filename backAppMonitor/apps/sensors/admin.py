@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.db import models
 from django.utils.html import format_html
-from .models import Tag, Device, Located, Sensor
+from .models import Tag, Device, Located, Sensor, StateSensors
 
 
 # Register your models here.
@@ -66,3 +66,4 @@ admin.site.register(Tag, TagAdmin)
 admin.site.register(Device, DeviceAdmin)
 admin.site.register(Located, LocatedAdmin)
 admin.site.register(Sensor, SensorAdmin)
+admin.site.register(StateSensors)
