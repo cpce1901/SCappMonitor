@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import DayGraphics, EnergyGraphic
+from .views import DayGraphics
 
 app_name = 'graphics_app'
 

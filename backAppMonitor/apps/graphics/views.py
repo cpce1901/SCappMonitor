@@ -37,7 +37,7 @@ class DayGraphics(LoginRequiredMixin, TemplateView):
             unit = "Hz"
             name_var = "Frecuencia"
         elif name == "pa":
-            unit = "pa"
+            unit = "kw/h"
             name_var = "Energía"
 
         list_label = []
@@ -97,7 +97,7 @@ class DayGraphics(LoginRequiredMixin, TemplateView):
             "p1": ("Potencia de línea", "Línea 1"),
             "p2": ("Potencia de línea", "Línea 2"),
             "p3": ("Potencia de línea", "Línea 3"),
-            "pa": ("Potencia activa", ""),
+            "pa": ("Energía", ""),
             "fp": ("Factor de potencia", ""),
             "hz": ("Frecuencia", ""),
         }
@@ -122,86 +122,3 @@ class DayGraphics(LoginRequiredMixin, TemplateView):
         return context
 
 
-class EnergyGraphic(LoginRequiredMixin, TemplateView):
-    template_name = "graphics/energygraphics.html"
-    login_url = reverse_lazy("users_app:login")
-
-    # Genera json de grafico
-    def create_json(self, query, name):
-        if name in ["v1", "v2", "v3"]:
-            unit = "V"
-        elif name in ["v13", "v12", "v23"]:
-            unit = "V"
-        elif name in ["i1", "i2", "i3"]:
-            unit = "A"
-        elif name in ["p1", "p2", "p3"]:
-            unit = "Kw"
-        elif name == "pa":
-            unit = "Kw/h"
-        elif name == "fp":
-            unit = ""
-        elif name == "hz":
-            unit = "Hz"
-
-        list_label = []
-        list_data = []
-
-        for a, e in query:
-            list_data.append(str(round(a,2)))
-            fecha = e.strftime("%Y-%m-%d %H:%M:%S")
-            list_label.append(fecha)
-
-        if len(list_data) and len(list_label):
-            show = True
-        else:
-            show = False
-
-        data = {
-            "data": list_data,
-            "labels": list_label,
-            "name": name,
-            "unit": unit,
-        }
-
-        json_response = json.dumps(data)
-
-        return show, json_response
-
-   
-    def get_context_data(self, **kwargs):      
-        time_list = [] 
-
-        context = super().get_context_data(**kwargs)
-        date = datetime.date.today()
-        place_id = self.kwargs["pk_place"]
-        sensor_id = self.kwargs["pk_sensor"]
-        interval = self.kwargs["interval"]
-        var_name = "pa"
-
-        """
-        intervals:
-        1 - hours
-        2 - days
-        3 - mouths
-        4 - years
-
-        
-        """
-
-        datos = Measures.objects.lectures_energy_today_by_interval_in_hours(1)
-        print(datos)
-        #datos = Measures.objects.lectures_energy_date_range_by_interval(1, start_date, end_date, 'hour')
-
-        sensor = Sensor.objects.get(id=sensor_id)
-        place = Located.objects.get(id=place_id)
-
-        # Creamos los datos json con los datos recibidos desde db
-        show, json_data = self.create_json(datos, var_name)
-        
-        context["show"] = show
-        context["sensor"] = sensor
-        context["place"] = place
-        context["today"] = json_data
-        #context["var"] = (var, text)
-        context["date"] = date
-        return context
