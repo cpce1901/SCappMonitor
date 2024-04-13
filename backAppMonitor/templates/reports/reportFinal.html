@@ -70,7 +70,9 @@
 
                         <!-- Analitica -->
                         <div 
-                        class="container d-flex {% if json_analitics_1 and json_analitics_2 and json_analitics_3 %} flex-column {% else %} justify-content-md-around gap-3 {% endif %} ">
+                        class="container d-flex 
+                        {% if json_analitics_1 and not json_analitics_2 and not json_analitics_3 %} flex-column flex-md-row justify-content-md-around gap-md-3
+                        {% elif json_analitics_1 and json_analitics_2 and json_analitics_3 %} flex-column justify-content-md-around gap-3 {% endif %} ">
 
                             <!-- Maximos -->
                             <div class="d-flex flex-column flex-md-row justify-content-md-around gap-3 mb-5">

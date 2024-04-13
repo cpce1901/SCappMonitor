@@ -42,7 +42,7 @@ def export_excel_task(sensor, vars, date1, date2):
         if 'kwh' in vars or 'hz' in vars or 'fp' in vars:
             detail = 'pa' if 'kwh' in vars else str(vars)
             datos = Measures.objects.list_lectures_sensor_group_detail_dates(sensor, detail, date1, date2)
-            print(datos)
+            
             # Agrega encabezados de columna
             ws.append(
                 ["ID", detail, "Fecha"]

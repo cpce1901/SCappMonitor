@@ -169,28 +169,28 @@ class ReportFinal(LoginRequiredMixin, TemplateView):
         name_var = ""
         if name in ["v1", "v2", "v3"]:
             unit = "V"
-            name_var = "Tensión de fase"
+            name_var = f"Tensión de fase {name}".upper()
         elif name in ["v13", "v12", "v23"]:
             unit = "V"
-            name_var = "Tensión de línea"
+            name_var = f"Tensión de línea {name}".upper()
         elif name in ["i1", "i2", "i3"]:
             unit = "A"
-            name_var = "Corriente de fase"
+            name_var = f"Corriente de fase {name}".upper()
         elif name in ["p1", "p2", "p3"]:
             unit = "Kw"
-            name_var = "Potencia de fase"
+            name_var = f"Potencia de fase {name}".upper()
         elif name == "ea":
             unit = "Kw/h"
-            name_var = "Energía activa"
+            name_var = "Energía activa".upper()
         elif name == "fp":
             unit = ""
-            name_var = "Factor de potencia"
+            name_var = "Factor de potencia".upper()
         elif name == "hz":
             unit = "Hz"
-            name_var = "Frecuencia"
+            name_var = "Frecuencia".upper()
         elif name == "pa":
             unit = "kw/h"
-            name_var = "Energía"
+            name_var = "Energía".upper()
 
         for a, e, i in query:
             list_data.append(e)
